@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, reactive, ref, toRefs} from "vue";
+import {computed, onMounted, reactive, ref, toRefs} from "vue";
 import {chkOrder, putOrder} from "@/api/putOrderItem";
 import {useItemStore} from "@/stores/orderItemStore";
 import {useModalStore} from "@/stores/modalStore";
@@ -37,6 +37,10 @@ const orderList = reactive(useItem.orderList);
 const listLength = ref(0);
 const { show_modal } = toRefs(useStore);
 
+
+onMounted(() => {
+  orderList.splice(0,orderList.length);
+})
 
 const increaseItem = (index:number) => {
   orderList[index].count++;
@@ -55,12 +59,13 @@ const orderItem = async () => {
     show_modal.value = true;
     return;
   }
-  const data = {coffees: {}};
+  const data = {coffees: {},drinks: {}};
   data.coffees = orderList.filter((a)=>a.type == 'coffee');
+  data.drinks = orderList.filter((a)=>a.type == 'drink');
   const response = await putOrder(data);
   show_modal.value = true;
   // @ts-ignore
-  console.log(response.data.coffees)
+  console.log(response.data)
   resetItem();
 }
 const resetItem = () => {

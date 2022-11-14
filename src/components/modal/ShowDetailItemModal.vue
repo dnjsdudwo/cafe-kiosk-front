@@ -57,7 +57,6 @@ const addItem = (data) => {
     tumbler: data.tumbler,
     price:resultPrice.value,
     count:1,
-    // @ts-ignore
     type:props.type
   });
   show_detail_modal.value = false;
@@ -87,7 +86,7 @@ const resultPrice = computed(() => {
 
           <div class="modal-body">
             <slot name="body"></slot>
-            <div class="add_shot_item">
+            <div class="add_shot_item" v-if="props.type == 'coffee' ">
               <input type="radio" name="shotRadio" id="s1" value="1" v-model="item.shot" @change="shotPrice=-300">
               <label for="s1">1샷-300원</label>
               <input type="radio" name="shotRadio" id="s2" value="2" v-model="item.shot" @change="shotPrice=0">
@@ -125,7 +124,7 @@ const resultPrice = computed(() => {
               <p>{{ props.description }}</p>
               <br>
               <p> 주문하신 상품 </p>
-              <p> 샷 : {{ item.shot }}</p>
+              <p v-if="props.type == 'coffee'"> 샷 : {{ item.shot }}</p>
               <div v-if="props.isIce  == true">
                 <p> 얼음 : {{ item.ice }}</p>
               </div>

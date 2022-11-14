@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router"
 import OrderList from "@/components/OrderList.vue";
+import {onMounted} from "vue";
 
 const router = useRouter()
 

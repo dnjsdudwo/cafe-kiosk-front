@@ -28,7 +28,7 @@ const chkOrder = (length:Number) => {
 
 const chkDetailOrder = (data:any) => {
     const response = {modal:{},chk:false};
-    if(data.shot == null){
+    if(data.shot == null && data.type == 'coffee'){
         // @ts-ignore
         response.modal  = createModal('알림','샷을 선택해주세요.','',null);
         return response

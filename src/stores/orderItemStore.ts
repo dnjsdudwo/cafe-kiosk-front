@@ -11,7 +11,6 @@ export const useItemStore = defineStore('order',() => {
         tumbler:'',
         price:0,
         count:1,
-        type:''
     }]);
 
     return{

@@ -61,10 +61,6 @@ const { show_detail_modal } = toRefs(useStore);
 
 const currentItem = {name:'',price:0,isMilk:false,isIce:false,description:'',type:''};
 
-onMounted(() => {
-  orderList.splice(0,orderList.length);
-})
-
 const item = reactive([
     {
   name:'아메리카노',
