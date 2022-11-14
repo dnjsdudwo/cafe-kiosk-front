@@ -17,6 +17,10 @@
         </li>
       </ul>
     </div>
+    <v-btn variant="outlined" @click="addBeverageItem">음료 추가하기</v-btn>
+    <div v-if="show_add_item_modal">
+      <AddItemModal/>
+    </div>
     <div v-if="show_modal">
       <resultOrderModal/>
     </div>
@@ -28,14 +32,14 @@ import {computed, onMounted, reactive, ref, toRefs} from "vue";
 import {chkOrder, putOrder} from "@/api/putOrderItem";
 import {useItemStore} from "@/stores/orderItemStore";
 import {useModalStore} from "@/stores/modalStore";
-
+import AddItemModal from "@/components/modal/AddItemModal.vue";
 
 const useItem = useItemStore();
 const useStore = useModalStore();
 
 const orderList = reactive(useItem.orderList);
 const listLength = ref(0);
-const { show_modal } = toRefs(useStore);
+const { show_modal,show_add_item_modal } = toRefs(useStore);
 
 
 onMounted(() => {
@@ -59,6 +63,7 @@ const orderItem = async () => {
     show_modal.value = true;
     return;
   }
+  console.log(orderList)
   const data = {coffees: {},drinks: {}};
   data.coffees = orderList.filter((a)=>a.type == 'coffee');
   data.drinks = orderList.filter((a)=>a.type == 'drink');
@@ -83,6 +88,13 @@ const allPrice = computed(() => {
 const resultOrderModal = ()  => {
   return chkOrder(listLength.value);
 }
+
+
+const addBeverageItem = () => {
+  show_add_item_modal.value = true;
+}
+
+
 
 </script>
 

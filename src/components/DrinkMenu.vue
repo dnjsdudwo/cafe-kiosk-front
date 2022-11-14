@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container>
-      <h1>Coffee & Espresso </h1>
+      <h1>Drinks </h1>
       <v-divider></v-divider>
       <v-row no-gutters>
         <v-col
@@ -46,10 +46,28 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, toRefs} from "vue";
+import {onMounted, reactive, toRefs} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import {createModal} from "@/components/modal/createNewModal";
 import ShowDetailItemModal from "@/components/modal/ShowDetailItemModal.vue";
+import {getDrink} from "@/api/axiosItem";
+
+
+// const drink = reactive([{
+//   name:String,
+//   price:Number,
+//   isMilk:Boolean,
+//   isIce:Boolean,
+//   description:String,
+//   type:String
+// }])
+// onMounted(async() =>  {
+//   const response = await getDrink();
+//   response.map((x:any,i:number) => {
+//     drink[i] = response[i]
+//   })
+//   console.log(response)
+// })
 
 const item = reactive([
   {

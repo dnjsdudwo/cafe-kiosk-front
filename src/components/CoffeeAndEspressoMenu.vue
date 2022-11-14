@@ -46,12 +46,13 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref, toRefs} from "vue";
+import {onMounted, reactive, ref, toRefs} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 // @ts-ignore
 import {createModal} from "@/components/modal/createNewModal";
 import ShowDetailItemModal from "@/components/modal/ShowDetailItemModal.vue";
 import {useItemStore} from "@/stores/orderItemStore";
+import {getCoffee} from "@/api/axiosItem";
 
 const useItem = useItemStore();
 const orderList = reactive(useItem.orderList);
@@ -59,6 +60,20 @@ const orderList = reactive(useItem.orderList);
 const useStore = useModalStore();
 const { show_detail_modal } = toRefs(useStore);
 
+// const coffee = reactive([{
+//   name:String,
+//   price:Number,
+//   isMilk:Boolean,
+//   isIce:Boolean,
+//   description:String,
+//   type:String
+// }])
+// onMounted(async() =>  {
+//   const response = await getCoffee();
+//   response.map((x:any,i:number) => {
+//     coffee[i] = response[i]
+//   })
+// })
 const currentItem = {name:'',price:0,isMilk:false,isIce:false,description:'',type:''};
 
 const item = reactive([
@@ -129,6 +144,7 @@ const showDetailItem =  (data: any) => {
   currentItem.description = data.description;
   currentItem.type = data.type;
   show_detail_modal.value = true;
+  console.log(data)
 }
 
 // @ts-ignore
