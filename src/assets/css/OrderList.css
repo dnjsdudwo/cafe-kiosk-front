@@ -1,0 +1,16 @@
+.list_item_area{
+    position: absolute;
+    right: 0;
+    bottom: 65px;
+    margin-right: 55px;
+    width: 550px;
+    height: 250px;
+    border: 1px solid #fff;
+}
+.btn_order,.btn_reset,.title_price{
+    position: absolute;
+    right: 620px;
+}
+.btn_order{bottom: 65px;}
+.btn_reset{bottom: 105px;}
+.title_price{bottom: 145px;}

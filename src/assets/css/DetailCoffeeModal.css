@@ -1,0 +1,82 @@
+label {width: 50px; margin-right: 100px;}
+
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: table;
+    transition: opacity 0.3s ease;
+}
+
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.modal-container {
+    width: 990px;
+    height: 700px;
+    margin: 0px auto;
+    padding: 20px 30px;
+    background-color: rgb(33, 33, 33);
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    transition: all 0.3s ease;
+}
+
+.add_shot_item,.add_ice_item,.add_milk_item,.add_cup_item{
+    font-size: 19px;
+    padding: 12px;
+}
+
+.modal-header {
+    margin-top: 0;
+    color: #fff;
+}
+
+.modal-body {
+    margin: 20px 0;
+}
+.modal-footer{
+
+}
+.footer_text_area{
+    font-size: 18px;
+}
+.btn_area{
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    margin-top: 35px;
+}
+.modal-default-button {
+    width: 100px;
+    border:1px solid #fff;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.modal-default-button:hover{
+    background-color: #fff;
+    color: rgb(33, 33, 33);
+}
+
+
+.modal-enter-from {
+    opacity: 0;
+}
+
+.modal-leave-to {
+    opacity: 0;
+}
+
+.modal-enter-from .modal-container,
+.modal-leave-to .modal-container {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}

@@ -40,15 +40,23 @@
 						</v-sheet>
 					</v-col>
 				</v-row>
-			</v-container>
+      </v-container>
+    <div v-if="show_success_modal">
+      <addItemModal/>
+    </div>
 	</div>
 	
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import {reactive, ref, toRefs} from "vue";
 import LoadingProgress from "./LoadingProgress.vue"
 import CustomAlert from '@/components/CustomAlert.vue'
+import {createModal} from "@/components/modal/createNewModal";
+import {useModalStore} from "@/stores/modalStore";
+
+const useStore = useModalStore();
+const { show_success_modal } = toRefs(useStore);
 
 const isView = ref(false);
 const tes  = ref("");
@@ -62,9 +70,10 @@ const testInput = () => {
 	console.log(tes.value)
 }
 
-const testLoading = async () => {
-	
+const addItemModal = createModal('알림','상품을 추가하였습니다','');
+
+const testLoading =  () => {
 	// isView.value = true;
-	await alert();
+	 show_success_modal.value = true;
 }
 </script>

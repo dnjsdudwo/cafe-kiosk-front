@@ -20,10 +20,12 @@
 			</v-card>
 		</v-main>
 	</v-layout>
+  <order-list></order-list>
 </template>
 
 <script setup lang="ts">
 import {useRouter} from "vue-router"
+import OrderList from "@/components/OrderList.vue";
 
 const router = useRouter()
 
