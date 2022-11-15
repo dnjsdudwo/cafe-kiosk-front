@@ -54,4 +54,21 @@ const chkDetailOrder = (data:any) => {
     return response;
 }
 
-export {putOrder,chkOrder,chkDetailOrder}
+const chkAddItem = (data:any) => {
+    const response = {modal:{},chk:false};
+    console.log(data)
+    if(data.type == ''){
+        // @ts-ignore
+        response.modal  = createModal('알림','음료 종류는 필수사항 입니다.','',null);
+        return response;
+    }
+    else if(data.name == ''){
+        // @ts-ignore
+        response.modal  = createModal('알림','음료 이름은 필수사항 입니다.','',null);
+        return response;
+    }
+    response.chk = true;
+    return response;
+}
+
+export {putOrder,chkOrder,chkDetailOrder,chkAddItem}

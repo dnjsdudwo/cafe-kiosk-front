@@ -1,4 +1,8 @@
 label {width: 50px; margin-right: 100px;}
+input {border: 1px solid #fff; border-radius: 9px; padding: 5px}
+textarea {border: 1px solid #fff; border-radius: 9px; padding: 5px}
+select {border: 1px solid #fff; border-radius: 9px; width: 150px;}
+option {color: black;}
 
 .modal-mask {
     position: fixed;

@@ -1,7 +1,7 @@
 .list_item_area{
     position: absolute;
     right: 0;
-    bottom: 65px;
+    bottom: 10px;
     margin-right: 55px;
     width: 550px;
     height: 250px;
@@ -11,6 +11,7 @@
     position: absolute;
     right: 620px;
 }
-.btn_order{bottom: 65px;}
-.btn_reset{bottom: 105px;}
-.title_price{bottom: 145px;}
+.btn_beverage_add{position: absolute;bottom: 10px;}
+.btn_order{bottom: 10px;}
+.btn_reset{bottom: 50px;}
+.title_price{bottom: 90px;}

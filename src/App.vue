@@ -17,10 +17,10 @@
 			</v-tabs>
 			<v-card height="857px">
 				<router-view></router-view>
-			</v-card>
+        <order-list></order-list>
+      </v-card>
 		</v-main>
-	</v-layout>
-  <order-list></order-list>
+  </v-layout>
 </template>
 
 <script setup lang="ts">

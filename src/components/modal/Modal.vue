@@ -1,13 +1,3 @@
-<script setup>
-import {useModalStore} from "@/stores/modalStore.ts";
-import {toRefs} from "vue";
-
-const useStore = useModalStore()
-
-const {show_modal,show_success_modal,show_fail_modal} = toRefs(useStore);
-
-</script>
-
 <template>
   <Transition name="modal">
     <div  class="modal-mask">
@@ -35,6 +25,17 @@ const {show_modal,show_success_modal,show_fail_modal} = toRefs(useStore);
     </div>
   </Transition>
 </template>
+
+<script setup>
+import {useModalStore} from "@/stores/modalStore.ts";
+import {toRefs} from "vue";
+
+const useStore = useModalStore()
+
+const {show_modal,show_success_modal,show_fail_modal} = toRefs(useStore);
+
+</script>
+
 
 <style scoped>
 .modal-mask {

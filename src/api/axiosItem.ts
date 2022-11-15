@@ -2,7 +2,7 @@ import axios from "axios";
 import {useItemStore} from "@/stores/orderItemStore";
 
 
-const addItem = (data:any) => {
+const addItem = async (data:any) => {
     let item = {
         name:data.name,
         price:data.price,
@@ -15,17 +15,17 @@ const addItem = (data:any) => {
     axios.defaults.headers.post = null;
     try {
         if(item.type == 'coffee'){
-            const response = axios.post('/api/add/coffee',JSON.stringify(item),{
+             const response =  axios.post('/api/add/coffee',JSON.stringify(item),{
                 headers: {'content-type': 'application/json'}
             });
-            getBeverage();
+            await getBeverage();
             return response;
         }
         else if(item.type == 'drink'){
-            const response = axios.post('/api/add/drink',JSON.stringify(item),{
+            const response =  axios.post('/api/add/drink',JSON.stringify(item),{
                 headers: {'content-type': 'application/json'}
             });
-            getBeverage();
+            await getBeverage();
             return response;
         }
 

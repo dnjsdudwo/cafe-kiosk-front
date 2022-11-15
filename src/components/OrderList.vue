@@ -17,7 +17,7 @@
         </li>
       </ul>
     </div>
-    <v-btn variant="outlined" @click="addBeverageItem">음료 추가하기</v-btn>
+    <v-btn variant="outlined" class="btn_beverage_add" @click="addBeverageItem">음료 추가하기</v-btn>
     <div v-if="show_add_item_modal">
       <AddItemModal/>
     </div>
@@ -63,14 +63,11 @@ const orderItem = async () => {
     show_modal.value = true;
     return;
   }
-  console.log(orderList)
   const data = {coffees: {},drinks: {}};
   data.coffees = orderList.filter((a)=>a.type == 'coffee');
   data.drinks = orderList.filter((a)=>a.type == 'drink');
   const response = await putOrder(data);
   show_modal.value = true;
-  // @ts-ignore
-  console.log(response.data)
   resetItem();
 }
 const resetItem = () => {

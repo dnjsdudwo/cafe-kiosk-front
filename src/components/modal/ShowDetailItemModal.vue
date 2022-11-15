@@ -1,79 +1,3 @@
-<script setup lang="ts">
-import {useModalStore} from "@/stores/modalStore";
-import {computed, reactive, ref, toRefs} from "vue";
-import {useItemStore} from "@/stores/orderItemStore";
-import {chkDetailOrder} from "@/api/putOrderItem";
-
-const useStore = useModalStore()
-
-const useItem = useItemStore();
-
-const {show_detail_modal,show_fail_modal} = toRefs(useStore);
-const orderList = reactive(useItem.orderList);
-
-
-const props = defineProps(
-    {
-      name:String,
-      milk:String,
-      price:Number,
-      description:String,
-      shot:Number,
-      ice:String,
-      tumbler:String,
-      isMilk:Boolean,
-      isIce:Boolean,
-      type:String
-    }
-)
-
-const item = reactive({
-  shot:ref(props.shot),
-  milk:ref(props.milk),
-  price:ref(props.price),
-  isMilk:ref(props.isMilk),
-  isIce:ref(props.isIce),
-  ice:ref(props.ice),
-  tumbler:ref(props.tumbler),
-})
-
-const shotPrice = ref(0);
-const milkPrice = ref(0);
-
-
-// @ts-ignore
-const addItem = (data) => {
-  // @ts-ignore
-  if (!chkDetailOrder(data).chk) {
-    show_fail_modal.value = true;
-    return;
-  }
-  orderList.push({
-    // @ts-ignore
-    name: props.name,
-    shot: data.shot,
-    milk: data.milk,
-    ice: data.ice,
-    tumbler: data.tumbler,
-    price:resultPrice.value,
-    count:1,
-    type:props.type
-  });
-  show_detail_modal.value = false;
-}
-
-const chkModal = computed(() => {
-  // @ts-ignore
-  return chkDetailOrder(item).modal;
-})
-
-const resultPrice = computed(() => {
-  // @ts-ignore
-  return item.price+shotPrice.value+milkPrice.value;
-})
-
-</script>
-
 <template>
   <Transition name="modal">
     <div  class="modal-mask">
@@ -152,6 +76,84 @@ const resultPrice = computed(() => {
     </div>
   </Transition>
 </template>
+
+<script setup lang="ts">
+import {useModalStore} from "@/stores/modalStore";
+import {computed, reactive, ref, toRefs} from "vue";
+import {useItemStore} from "@/stores/orderItemStore";
+import {chkDetailOrder} from "@/api/putOrderItem";
+
+const useStore = useModalStore()
+
+const useItem = useItemStore();
+
+const {show_detail_modal,show_fail_modal} = toRefs(useStore);
+const orderList = reactive(useItem.orderList);
+
+
+const props = defineProps(
+    {
+      name:String,
+      milk:String,
+      price:Number,
+      description:String,
+      shot:Number,
+      ice:String,
+      tumbler:String,
+      isMilk:Boolean,
+      isIce:Boolean,
+      type:String
+    }
+)
+
+const item = reactive({
+  shot:ref(props.shot),
+  milk:ref(props.milk),
+  price:ref(props.price),
+  isMilk:ref(props.isMilk),
+  isIce:ref(props.isIce),
+  ice:ref(props.ice),
+  tumbler:ref(props.tumbler),
+})
+
+const shotPrice = ref(0);
+const milkPrice = ref(0);
+
+
+// @ts-ignore
+const addItem = (data) => {
+  // @ts-ignore
+  if (!chkDetailOrder(data).chk) {
+    show_fail_modal.value = true;
+    return;
+  }
+  orderList.push({
+    // @ts-ignore
+    name: props.name,
+    shot: data.shot,
+    milk: data.milk,
+    ice: data.ice,
+    tumbler: data.tumbler,
+    price:resultPrice.value,
+    count:1,
+    type:props.type
+  });
+  show_detail_modal.value = false;
+}
+
+const chkModal = computed(() => {
+  // @ts-ignore
+  return chkDetailOrder(item).modal;
+})
+
+const resultPrice = computed(() => {
+  // @ts-ignore
+  return item.price+shotPrice.value+milkPrice.value;
+})
+
+</script>
+
+
 
 <style scoped>
 @import "@/assets/css/DetailCoffeeModal.css";
