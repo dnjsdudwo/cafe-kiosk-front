@@ -49,7 +49,7 @@
       <h1>Cart</h1>
       <v-divider></v-divider>
         <v-list
-            v-for="cart in cartList.list"
+            v-for="cart in cartList"
             :key="cart">
           <v-list-item>{{cart.name +"  " +cart.price + "원"}}</v-list-item>
         </v-list>
