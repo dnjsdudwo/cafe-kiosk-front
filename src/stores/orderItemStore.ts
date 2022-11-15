@@ -3,6 +3,25 @@ import {reactive} from "vue";
 
 export const useItemStore = defineStore('order',() => {
 
+
+    const coffees = reactive([{
+        name:String,
+        price:Number,
+        isMilk:Boolean,
+        isIce:Boolean,
+        description:String,
+        type:String
+    }])
+
+    const drinks = reactive([{
+        name:String,
+        price:Number,
+        isMilk:Boolean,
+        isIce:Boolean,
+        description:String,
+        type:String
+    }])
+
     const orderList = reactive([{
         name:'',
         shot:'',
@@ -15,6 +34,6 @@ export const useItemStore = defineStore('order',() => {
     }]);
 
     return{
-        orderList
+        orderList,coffees,drinks
     }
 });

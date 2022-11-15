@@ -50,23 +50,15 @@ import {onMounted, reactive, toRefs} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import {createModal} from "@/components/modal/createNewModal";
 import ShowDetailItemModal from "@/components/modal/ShowDetailItemModal.vue";
-import {getDrink} from "@/api/axiosItem";
+import {useItemStore} from "@/stores/orderItemStore";
+import {getBeverage} from "@/api/axiosItem";
 
 
-// const drink = reactive([{
-//   name:String,
-//   price:Number,
-//   isMilk:Boolean,
-//   isIce:Boolean,
-//   description:String,
-//   type:String
-// }])
-// onMounted(async() =>  {
-//   const response = await getDrink();
-//   response.map((x:any,i:number) => {
-//     drink[i] = response[i]
-//   })
-//   console.log(response)
+const useItem = useItemStore();
+const {drinks} = toRefs(useItem)
+
+// onMounted(()=>{
+//   getBeverage();
 // })
 
 const item = reactive([

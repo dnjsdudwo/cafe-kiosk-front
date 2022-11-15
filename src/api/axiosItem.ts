@@ -1,4 +1,6 @@
 import axios from "axios";
+import {useItemStore} from "@/stores/orderItemStore";
+
 
 const addItem = (data:any) => {
     let item = {
@@ -9,7 +11,6 @@ const addItem = (data:any) => {
         isIce:data.isIce,
         type:data.type
     }
-    console.log(item)
     // @ts-ignore
     axios.defaults.headers.post = null;
     try {
@@ -17,12 +18,14 @@ const addItem = (data:any) => {
             const response = axios.post('/api/add/coffee',JSON.stringify(item),{
                 headers: {'content-type': 'application/json'}
             });
+            getBeverage();
             return response;
         }
         else if(item.type == 'drink'){
             const response = axios.post('/api/add/drink',JSON.stringify(item),{
                 headers: {'content-type': 'application/json'}
             });
+            getBeverage();
             return response;
         }
 
@@ -33,21 +36,23 @@ const addItem = (data:any) => {
     }
 }
 
-const getCoffee = async () => {
+const getBeverage = async () => {
+    const useItem = useItemStore();
+    const {coffees,drinks} = useItem
+
+
     try {
-        const response = await axios.get('/api/find/coffee')
-        return response.data;
-    }
-    catch (e) {
-        console.log(e)
+            const response = await axios.get('/api/find/all')
+            response.data.coffees.map((x:any,i:number) => {
+            coffees[i] = response.data.coffees[i];
+        })
+            response.data.drinks.map((x:any,i:number) => {
+            drinks[i] = response.data.drinks[i];
+        })
         return;
     }
-}
-const getDrink = async () => {
-    try {
-        const response = await axios.get('/api/find/drink')
-        return response.data;
-    }
+
+
     catch (e) {
         console.log(e)
         return;
@@ -55,4 +60,5 @@ const getDrink = async () => {
 }
 
 
-export {addItem,getCoffee,getDrink}
+
+export {addItem,getBeverage}

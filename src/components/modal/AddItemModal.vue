@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import {useModalStore} from "@/stores/modalStore";
-import {computed, reactive, ref, toRefs} from "vue";
-import {useItemStore} from "@/stores/orderItemStore";
+import {computed, reactive, toRefs} from "vue";
 import {addItem} from "@/api/axiosItem";
 
 const useStore = useModalStore()
-
-const useItem = useItemStore();
 
 const {show_add_item_modal} = toRefs(useStore);
 
@@ -27,7 +24,7 @@ const isIce = computed(() => {
 })
 
 const addBeverage = (data:any) => {
-    addItem(data)
+  addItem(data)
 }
 
 
