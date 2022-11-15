@@ -33,7 +33,7 @@
 								<v-card-actions>
 									<v-btn variant="outlined"
 									       @click="testLoading()">
-										Button
+										장바구니
 									</v-btn>
 								</v-card-actions>
 							</v-card>
@@ -65,6 +65,6 @@ const testInput = () => {
 const testLoading = async () => {
 	
 	// isView.value = true;
-	await alert();
+	await alert("상품이 추가되었습니다");
 }
 </script>
