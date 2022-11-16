@@ -1,9 +1,14 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import {reactive, ref} from "vue";
 
-export const mberStore = defineStore("mberStore", () => {
-  const token = ref("");
+export const useMberStore = defineStore("mberStore", () => {
+  const menu: object[] = reactive([]);
   const userId = ref("");
 
-  return { token, userId };
+  const addMenu = (param: object) => {
+    menu.push(param)
+    userId.value = 'dd';
+  }
+
+  return { menu, userId, addMenu };
 });
