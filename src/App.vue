@@ -17,7 +17,7 @@
 			</v-tabs>
 			<v-card height="857px">
 				<router-view></router-view>
-        <orderList></orderList>
+        <orderList v-if="$route.name !== 'Home'"></orderList>
 			</v-card>
 		</v-main>
 	</v-layout>
