@@ -17,6 +17,7 @@
 			</v-tabs>
 			<v-card height="857px">
 				<router-view></router-view>
+        <orderList></orderList>
 			</v-card>
 		</v-main>
 	</v-layout>
@@ -24,6 +25,7 @@
 
 <script setup lang="ts">
 import {useRouter} from "vue-router"
+import orderList from "@/components/orderList.vue";
 
 const router = useRouter()
 

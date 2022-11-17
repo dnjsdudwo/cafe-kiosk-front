@@ -29,7 +29,7 @@
 
               <v-card-actions>
                 <v-btn variant="outlined"
-                       @click="addCart(menu ,index)">
+                       @click="click_addCart(menu ,index)">
                   장바구니
                 </v-btn>
               </v-card-actions>
@@ -41,8 +41,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {computed, reactive} from "vue";
+import {useCartStore} from "@/sotre/mberStore";
 
 const menuList = reactive([
   {
@@ -69,7 +70,22 @@ const menuList = reactive([
     , menuInfo: "새콤달콤 과즙가득 파인애플주스"
     , count : 0
   }
-
 ])
+
+type useType = {
+  name: string,
+  price: number,
+  menuInfo: string,
+  count: number
+}
+
+const cartStore = useCartStore();
+const {addCart} = cartStore;
+
+const click_addCart = (menu: useType, index: number) => {
+  addCart(menu, index);
+}
+
+
 
 </script>
