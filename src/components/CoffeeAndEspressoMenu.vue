@@ -29,7 +29,7 @@
 
               <v-card-actions>
                 <v-btn variant="outlined"
-                       @click="addCart(menu ,index)">
+                       @click="click_addCart(menu ,index)">
                   장바구니
                 </v-btn>
               </v-card-actions>
@@ -39,23 +39,27 @@
       </v-row>
     </v-container>
   </div>
-  <div style="width: 500px; height: 250px; border: 1px solid white; margin-left: 700px; padding: 10px; overflow: scroll; position: relative;">
+  <div style="float:left; width: 500px; height: 250px; border: 1px solid white; margin-left: 700px; padding: 10px; overflow: scroll; position: relative;">
     <h2 style="text-align: center; margin-bottom: 15px">장바구니</h2>
     <h3 style="margin-bottom: 15px;">결제: {{allPrice.price}} 원</h3>
     <ul>
       <li v-for="cart in cartList" style="margin-bottom: 25px;">
          <span>{{cart.name}}</span>
-         <button @click="minusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:150px;">-</button>
+         <button @click="click_minusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:150px;">-</button>
          <input type="text" v-model="cart.count" style="border: 1px solid white; padding: 3px 15px; width: 50px; position: absolute; left: 200px">
-         <button @click="plusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:245px;">+</button>
-         <button @click="delCart(cart)" style="width: 50px; font-weight:bold;position: absolute; left:380px;">x</button>
+         <button @click="click_plusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:245px;">+</button>
+         <button @click="click_delCart(cart)" style="width: 50px; font-weight:bold;position: absolute; left:380px;">x</button>
       </li>
     </ul>
+  </div>
+  <div>
+    <v-btn variant="outlined" @click="click_order" style="margin-left: 20px; margin-top: 215px;">주문하기</v-btn>
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, reactive, ref} from "vue";
+import {useCartStore} from "@/sotre/mberStore";
 
 const menuList = reactive([
   {
@@ -96,40 +100,36 @@ const menuList = reactive([
   }
 ])
 
-let allPrice = reactive({price:0});
-
-let cartList = reactive(new Set());
-const addCart = (menu:any ,index:number) => {
-
-   cartList.add(menu);
-   allPrice.price += menu.price;
-
-   cartList.forEach((value:any) =>{
-     if(value.name == menu.name){
-       value.count++;
-     }
-   })
+type useType = {
+  name: string,
+  price: number,
+  menuInfo: string,
+  count: number
 }
 
-const minusCnt = (cart: any) => {
-  if (cart.count > 0) {
-    cart.count--;
-    allPrice.price -= cart.price;
-  }
+const cartStore = useCartStore();
+const {allPrice, cartList, addCart, minusCnt, plusCnt, delCart, order} = cartStore;
+
+const click_addCart = (menu: useType, index: number) => {
+  addCart(menu, index);
 }
 
-const plusCnt = (cart: any) => {
-  cart.count++;
-  allPrice.price += cart.price;
-
-  console.log(allPrice)
+const click_minusCnt = (cart: useType) => {
+  minusCnt(cart);
 }
 
-const delCart = (cart: any) => {
-  allPrice.price -= cart.price*cart.count;
-
-  cartList.delete(cart);
-  cart.count = 0;
+const click_plusCnt = (cart: useType) => {
+  plusCnt(cart);
 }
+
+const click_delCart = (cart: useType) => {
+  delCart(cart);
+}
+
+const click_order = () => {
+  order();
+}
+
+
 
 </script>
