@@ -1,13 +1,9 @@
-import axios from "axios";
 import {createModal} from "@/components/modal/createNewModal";
+import instance from "@/plugins/axios";
 
 const putOrder = (data:any) =>{
-    // @ts-ignore
-    axios.defaults.headers.post = null;
     try {
-        const response = axios.post('/api/order',data,{
-            headers: {'content-type': 'application/json'}
-        });
+        const response = instance.post('/api/order',data)
         return response;
     }
     catch (e) {
@@ -16,55 +12,60 @@ const putOrder = (data:any) =>{
     }
 }
 
+type dataType = {
+    shot:string,
+    type:string,
+    ice:string,
+    isIce:boolean,
+    isMilk:boolean,
+    milk:string,
+    tumbler:string
+}
+
+type itemType = {
+    name:string,
+    type:string,
+}
 
 
 const chkOrder = (length:Number) => {
-    const response = {};
+    const response = {modal:{}};
     if(length == 0){
-        // @ts-ignore
-        return  response.value = createModal('알림','상품을 먼저 추가해주세요.','',null);
+        return  response.modal = createModal("알림",'상품을 먼저 추가해주세요.','',null,null);
     }
-    // @ts-ignore
-    return response.value  = createModal('알림','주문을 완료하였습니다.','',null);
+    return response.modal  = createModal('알림','주문을 완료하였습니다.','',null,null);
 }
 
-const chkDetailOrder = (data:any) => {
+const chkDetailOrder = (data:dataType) => {
     const response = {modal:{},chk:false};
     if(data.shot == null && data.type == 'coffee'){
-        // @ts-ignore
-        response.modal  = createModal('알림','샷을 선택해주세요.','',null);
+        response.modal  = createModal('알림','샷을 선택해주세요.','',null,null);
         return response
     }
     else if(data.ice == null && data.isIce != false){
-        // @ts-ignore
-        response.modal  = createModal('알림','핫/아이스 를 선택해주세요.','',null);
+        response.modal  = createModal('알림','핫/아이스 를 선택해주세요.','',null,null);
         return response
     }
     else if(data.milk == null && data.isMilk != false){
-        // @ts-ignore
-        response.modal  = createModal('알림','우유를 선택해주세요.','',null);
+        response.modal  = createModal('알림','우유를 선택해주세요.','',null,null);
         return response;
     }
     else if(data.tumbler == null){
-        // @ts-ignore
-        response.modal  = createModal('알림','텀블러 사용유무를 선택해주세요.','',null);
+        response.modal  = createModal('알림','텀블러 사용유무를 선택해주세요.','',null,null);
         return response;
     }
     response.chk = true;
     return response;
 }
 
-const chkAddItem = (data:any) => {
+const chkAddItem = (data:itemType) => {
     const response = {modal:{},chk:false};
-    console.log(data)
     if(data.type == ''){
-        // @ts-ignore
-        response.modal  = createModal('알림','음료 종류는 필수사항 입니다.','',null);
+        response.modal  = createModal('알림','음료 종류는 필수사항 입니다.','',null,null);
         return response;
     }
     else if(data.name == ''){
-        // @ts-ignore
-        response.modal  = createModal('알림','음료 이름은 필수사항 입니다.','',null);
+        response.modal  = createModal('알림','음료 이름은 필수사항 입니다.','',null,null);
         return response;
     }
     response.chk = true;

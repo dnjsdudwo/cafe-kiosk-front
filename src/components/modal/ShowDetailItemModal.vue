@@ -5,12 +5,12 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header"></slot>
-            <h1>{{ props.name }}</h1>
+            <h1>{{ item.name }}</h1>
           </div>
 
           <div class="modal-body">
             <slot name="body"></slot>
-            <div class="add_shot_item" v-if="props.type == 'coffee' ">
+            <div class="add_shot_item" v-if="item.type == 'coffee' ">
               <input type="radio" name="shotRadio" id="s1" value="1" v-model="item.shot" @change="shotPrice=-300">
               <label for="s1">1샷-300원</label>
               <input type="radio" name="shotRadio" id="s2" value="2" v-model="item.shot" @change="shotPrice=0">
@@ -18,13 +18,13 @@
               <input type="radio" name="shotRadio" id="s3" value="3" v-model="item.shot" @change="shotPrice=600">
               <label for="s3">3샷+600원</label>
             </div>
-            <div class="add_ice_item" v-if="props.isIce == true">
+            <div class="add_ice_item" v-if="item.isIce == true">
               <input type="radio" name="iceRadio" id="i1" value="아이스" v-model="item.ice">
               <label for="i1">아이스</label>
               <input type="radio" name="iceRadio" id="i2" value="핫" v-model="item.ice">
               <label for="i2">핫</label>
             </div>
-            <div class="add_milk_item" v-if="props.isMilk == true">
+            <div class="add_milk_item" v-if="item.isMilk == true">
               <input type="radio" name="milkRadio" id="m1" value="우유" v-model="item.milk" @change="milkPrice=0">
               <label for="m1">우유</label>
               <input type="radio" name="milkRadio" id="m2" value="두유" v-model="item.milk" @change="milkPrice=300">
@@ -45,14 +45,14 @@
           <div class="modal-footer">
             <slot name="footer"></slot>
             <div class="footer_text_area">
-              <p>{{ props.description }}</p>
+              <p>{{ item.description }}</p>
               <br>
               <p> 주문하신 상품 </p>
-              <p v-if="props.type == 'coffee'"> 샷 : {{ item.shot }}</p>
-              <div v-if="props.isIce  == true">
+              <p v-if="item.type == 'coffee'"> 샷 : {{ item.shot }}</p>
+              <div v-if="item.isIce  == true">
                 <p> 얼음 : {{ item.ice }}</p>
               </div>
-              <div v-if="props.isMilk  == true">
+              <div v-if="item.isMilk  == true">
                 <p> 우유 : {{ item.milk }}</p>
               </div>
               <p> 텀블러 : {{ item.tumbler }}</p>
@@ -91,63 +91,68 @@ const {show_detail_modal,show_fail_modal} = toRefs(useStore);
 const orderList = reactive(useItem.orderList);
 
 
-const props = defineProps(
+const props = defineProps<
     {
-      name:String,
-      milk:String,
-      price:Number,
-      description:String,
-      shot:Number,
-      ice:String,
-      tumbler:String,
-      isMilk:Boolean,
-      isIce:Boolean,
-      type:String
+      name:string,
+      price:number,
+      description:string,
+      isMilk:boolean,
+      isIce:boolean,
+      type:string,
     }
-)
+    >()
 
 const item = reactive({
-  shot:ref(props.shot),
-  milk:ref(props.milk),
+  name:ref(props.name),
   price:ref(props.price),
-  isMilk:ref(props.isMilk),
   isIce:ref(props.isIce),
-  ice:ref(props.ice),
-  tumbler:ref(props.tumbler),
+  type:ref(props.type),
+  isMilk:ref(props.isMilk),
+  description:ref(props.description),
+  shot:'',
+  milk:'',
+  ice:'',
+  tumbler:'',
 })
 
 const shotPrice = ref(0);
 const milkPrice = ref(0);
 
+interface listType {
+  name:string,
+  shot:string,
+  type:string,
+  ice:string,
+  isIce:boolean,
+  isMilk:boolean,
+  milk:string,
+  tumbler:string
+  price:number
+}
 
-// @ts-ignore
-const addItem = (data) => {
-  // @ts-ignore
+const addItem = (data:listType) => {
   if (!chkDetailOrder(data).chk) {
     show_fail_modal.value = true;
     return;
   }
   orderList.push({
-    // @ts-ignore
-    name: props.name,
+    name: data.name,
     shot: data.shot,
     milk: data.milk,
     ice: data.ice,
     tumbler: data.tumbler,
     price:resultPrice.value,
     count:1,
-    type:props.type
+    type:data.type
   });
   show_detail_modal.value = false;
 }
 
 const chkModal = computed(() => {
-  // @ts-ignore
   return chkDetailOrder(item).modal;
 })
 
 const resultPrice = computed(() => {
-  // @ts-ignore
   return item.price+shotPrice.value+milkPrice.value;
 })
 

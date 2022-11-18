@@ -1,8 +1,7 @@
 import {h} from "vue";
 import Modal from "@/components/modal/Modal.vue";
 
-// @ts-ignore
-const createModal = function createNewModal(title,body,footer,param,type) {
+const createModal = function createNewModal(title:string,body:string,footer:string,param:any,type:any) {
    return h(type==null? type=Modal:type, param, {
       header: () => h('div', title),
       body: () => h('div', body),

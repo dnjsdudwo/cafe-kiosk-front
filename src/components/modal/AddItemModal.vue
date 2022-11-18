@@ -12,6 +12,12 @@
                 <option value="drink">음료</option>
               </select>
             </div>
+            <div class="img_area" :style="{backgroundImage:`url(${item.img_url})`}"
+                 @drop.prevent="imgUpload"
+                 @dragenter.prevent
+                 @dragover.prevent>
+              <div class="img_center" @click="removeImg">+</div>
+            </div>
             <p>이름</p>
             <input type="text" v-model="item.name">
             <p>가격</p>
@@ -57,16 +63,19 @@
 <script setup lang="ts">
 import {useModalStore} from "@/stores/modalStore";
 import {computed, reactive, toRefs} from "vue";
-import {addItem} from "@/api/axiosItem";
+import {addCoffee,addDrink} from "@/api/axiosItem";
 import {chkAddItem} from "@/api/putOrderItem";
 
 const useStore = useModalStore();
 
 const {show_add_item_modal,show_fail_modal} = toRefs(useStore);
+const formData = new FormData();
 
 const item = reactive({
   name:'',
   price:0,
+  img_url:'#',
+  img_file:'',
   description:'',
   isMilk:true,
   isIce:true,
@@ -89,19 +98,54 @@ const itemType = computed(() => {
   }
 })
 
+
 const errModal = () => {
   return chkAddItem(item).modal;
 }
 
-const addBeverage = (data:any) =>{
+type dataType = {
+  img_file: any
+  img_url: string
+  name:string
+  price:string
+  description:string
+  isMilk:string
+  isIce:string
+  type:string
+}
+
+const addBeverage = async (data:dataType) =>{
     if(!chkAddItem(data).chk){
       show_fail_modal.value = true;
       return;
     }
-  addItem(data);
+
+  formData.append('coffee.name',data.name)
+  formData.append('coffee.price',data.price)
+  formData.append('coffee.description',data.description)
+  formData.append('coffee.isMilk',data.isMilk)
+  formData.append('coffee.isIce',data.isIce)
+  formData.append('coffee.type',data.type)
+  if(data.type == 'coffee'){
+    await addCoffee(formData);
+  }
+  else if(data.type == 'drink'){
+    await addDrink(formData);
+  }
   show_add_item_modal.value = false;
 }
 
+const imgUpload = (e:any) => {
+  const image = e.dataTransfer.files[0];
+  const url = URL.createObjectURL(image);
+  item.img_url = url;
+  item.img_file = image;
+  formData.append('img_file',image);
+}
+
+const removeImg = () => {
+  item.img_url = '#';
+}
 
 </script>
 

@@ -84,3 +84,18 @@ option {color: black;}
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
+.img_area {
+    float: right;
+    display: inline-block;
+    width: 180px;
+    height: 200px;
+    border: 4px dashed #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.img_center {
+    font-size: 50px;
+    text-align: center;
+    line-height: 180px;
+}

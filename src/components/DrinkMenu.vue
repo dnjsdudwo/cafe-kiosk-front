@@ -5,7 +5,7 @@
       <v-divider></v-divider>
       <v-row no-gutters>
         <v-col
-            v-for="(items,index) in item"
+            v-for="(items,index) in drinks"
             :key="index"
             cols="12"
             sm="4"
@@ -24,13 +24,16 @@
                   <div class="text-h6 mb-1">
                     {{ items.name }}
                   </div>
+                  <div class="img_area" :style="{backgroundImage: `url(/api/image/${items.img_url}.jpg)`}">
+
+                  </div>
                   <div class="text-caption">{{ items.description }}</div>
                 </div>
               </v-card-item>
 
               <v-card-actions>
                 <v-btn variant="outlined"
-                       @click="showDetailItem(item[index])">
+                       @click="showDetailItem(drinks[index])">
                   선택
                 </v-btn>
               </v-card-actions>
@@ -46,20 +49,16 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, reactive, toRefs} from "vue";
+import {onMounted, reactive, toRefs, watch} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import {createModal} from "@/components/modal/createNewModal";
 import ShowDetailItemModal from "@/components/modal/ShowDetailItemModal.vue";
 import {useItemStore} from "@/stores/orderItemStore";
-import {getBeverage} from "@/api/axiosItem";
 
 
 const useItem = useItemStore();
 const {drinks} = toRefs(useItem)
 
-// onMounted(()=>{
-//   getBeverage();
-// })
 
 const item = reactive([
   {
@@ -108,3 +107,14 @@ const detailItemModal = createModal('주문','','',currentItem,ShowDetailItemMod
 
 
 </script>
+<style scoped>
+.img_area{
+  float: right;
+  display: inline-block;
+  width: 150px;
+  height: 170px;
+  border: 1px solid #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+</style>
