@@ -1,15 +1,16 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import {ref, computed, reactive} from "vue";
 
 export const cartStore = defineStore("cartStore", ()=>{
-   const list = ref([]);
+   const list: object[] = reactive([]);
 
-   function addList(param:any){
-       // @ts-ignore
-       list.value.push(param);
+   const name: string = '';
+
+   function addList(param: object){
+       list.push(param);
    }
 
-   const getDataAll = computed(()=>list.value);
+   const getDataAll = computed(()=>list);
 
 
    return { list , addList, getDataAll};

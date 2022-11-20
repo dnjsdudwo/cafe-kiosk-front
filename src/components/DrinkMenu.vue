@@ -32,7 +32,7 @@
 
               <v-card-actions>
                 <v-btn variant="outlined"
-                       @click="testLoading(n)">
+                       @click="n.callback(n)">
                   BUY
                 </v-btn>
                 <v-btn variant="outlined"
@@ -51,7 +51,7 @@
         <v-list
             v-for="cart in cartList"
             :key="cart">
-          <v-list-item>{{cart.name +"  " +cart.price + "원"}}</v-list-item>
+            <v-list-item>{{cart.name +"  " +cart.price + "원"}}</v-list-item>
         </v-list>
       <div>
         <h4>수량 : {{sumCart.cnt}}</h4>
@@ -60,7 +60,7 @@
       <br>
       <div>
         <v-btn variant="outlined"
-               @click="allBuy_click()">
+               @click="allBuy_click">
           주문하기
         </v-btn>
       </div>
@@ -78,15 +78,23 @@ import { cartStore } from "@/store/cartStore";
 
 const isView = ref(false);
 const drinkList = reactive([
-  {name:'딸기스무디',price:5000,isIce:true,base:'딸기',flag:'drink'}
-  ,{name:'망고스무디',price:5000,isIce:true,base:'망고',flag:'drink'}
-  ,{name:'오렌지쥬스',price:4500,isIce:true,base:'오렌지',flag:'juice'}
+  {name:'딸기스무디',price:5000,isIce:true,base:'딸기',callback: smoothie()}
+  ,{name:'망고스무디',price:5000,isIce:true,base:'망고',callback: smoothie()}
+  ,{name:'오렌지쥬스',price:4500,isIce:true,base:'오렌지',callback: juice()}
 ])
 
-const testLoading = async (info) => {
-  const url='/api/' + info.flag;
+const juice = (info) => {
+  const uri = '/api/juice'
+  order(uri, info)
+}
 
-  const response = await axios.post( url,{
+const smoothie = (info) => {
+  const uri = '/api/smoothie'
+  order(uri, info)
+}
+
+const order = async (uri, info) => {
+  const response = await axios.post( uri,{
     /*orderList : info*/
     name : info.name,
     price : info.price,
@@ -94,17 +102,25 @@ const testLoading = async (info) => {
     base : info.base
   })
 
+  //수정
   if (response.data > 0){ alert("성공적으로 주문되었습니다")}
 
 }
 
 //장바구니에 담은 항목들
-const cartList = cartStore().list;
+const cart = cartStore();
+
+const test = {
+  name: 'dd',
+  age: 33
+}
+
+const { list, addList } = cart;
 
  const sumCart = computed(()=> {
   let sum = 0;
   let cnt = 0;
-   cartList.forEach( info => {
+   list.forEach( info => {
     cnt +=1;
     sum += Number(info.price);
   })
@@ -112,13 +128,13 @@ const cartList = cartStore().list;
 })
 
 const insertCart = (info) =>{
-  cartStore().addList(info);
+  addList(info);
   alert("장바구니에 추가되었습니다.");
  }
 
-const allBuy_click = async ()=>{
+const allBuy_click = async () => {
    const response = await axios.post('/api/juice',{
-     orderList : cartList
+     orderList : list
    })
   if (response.data > 0){ alert("성공적으로 주문되었습니다")}
 }
