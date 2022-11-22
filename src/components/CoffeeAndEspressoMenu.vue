@@ -30,7 +30,7 @@
               <v-card-actions>
                 <v-btn variant="outlined"
                        @click="click_addCart(menu ,index)">
-                  장바구니
+                  선택
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -43,8 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import {computed, reactive, ref} from "vue";
-import {useCartStore} from "@/sotre/mberStore";
+import {computed, reactive, ref, onMounted} from "vue";
+import {useCartStore} from "@/stores/cartStroe";
 
 const menuList = reactive([
   {
@@ -72,7 +72,7 @@ const menuList = reactive([
     , count : 0
   }
   , {
-    name: "끌커피"
+    name: "꿀커피"
     , price: 3000
     , menuInfo: "아메리카노에 꿀을더해 자극없이 편안하게 즐길 수 있는 음료"
     , count : 0

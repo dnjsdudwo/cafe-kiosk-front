@@ -14,20 +14,22 @@
       </ul>
     </div>
     <div>
-      <v-btn variant="outlined" @click="click_order" style="position: absolute; top:210px; left: 1250px;">주문하기</v-btn>
+      <v-btn variant="outlined" @click="click_order()" style="position: absolute; top:210px; left: 1250px;">주문하기</v-btn>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import {useCartStore} from "@/stores/cartStroe";
+import axios from "@/plugins/axios";
+import {reactive, ref} from "vue";
+
 type useType = {
   name: string,
   price: number,
   menuInfo: string,
   count: number
 }
-
-import {useCartStore} from "@/sotre/mberStore";
 
 const cartStore = useCartStore();
 const {allPrice, cartList, minusCnt, plusCnt, delCart, order} = cartStore;
@@ -44,7 +46,18 @@ const click_delCart = (cart: useType) => {
   delCart(cart);
 }
 
-const click_order = () => {
+const click_order = async () => {
+
+  await order_axios();
   order();
 }
+
+
+const order_axios = async () => {
+  const data = Array.from(cartList);
+  // let data2 = JSON.stringify(data);
+  const response = await axios.post('/api/coffee2', data)
+
+}
+
 </script>

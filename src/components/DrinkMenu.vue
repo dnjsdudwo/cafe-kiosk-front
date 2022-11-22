@@ -30,7 +30,7 @@
               <v-card-actions>
                 <v-btn variant="outlined"
                        @click="click_addCart(menu ,index)">
-                  장바구니
+                  선택
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import {computed, reactive} from "vue";
-import {useCartStore} from "@/sotre/mberStore";
+import {useCartStore} from "@/stores/cartStroe";
 
 const menuList = reactive([
   {
