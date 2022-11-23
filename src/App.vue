@@ -17,7 +17,7 @@
 			</v-tabs>
 			<v-card height="857px">
 				<router-view></router-view>
-        <orderList v-if="$route.name !== 'Home'"></orderList>
+        <OrderList v-if="$route.name !== 'Home'"></OrderList>
 			</v-card>
 		</v-main>
 	</v-layout>
@@ -25,7 +25,8 @@
 
 <script setup lang="ts">
 import {useRouter} from "vue-router"
-import orderList from "@/components/orderList.vue";
+import OrderList from "@/components/OrderList.vue";
+
 
 const router = useRouter()
 

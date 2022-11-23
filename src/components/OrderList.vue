@@ -4,12 +4,12 @@
       <h2 style="text-align: center; margin-bottom: 15px">장바구니</h2>
       <h3 style="margin-bottom: 15px;">결제: {{allPrice.price}} 원</h3>
       <ul>
-        <li v-for="cart in cartList" style="margin-bottom: 25px;">
+        <li v-for="(cart, index) in cartList" style="margin-bottom: 25px;">
           <span>{{cart.name}}</span>
-          <button @click="click_minusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:150px;">-</button>
+          <button @click="click_minusCnt(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:150px;">-</button>
           <input type="text" v-model="cart.count" style="border: 1px solid white; padding: 3px 15px; width: 50px; position: absolute; left: 200px">
           <button @click="click_plusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:245px;">+</button>
-          <button @click="click_delCart(cart)" style="width: 50px; font-weight:bold;position: absolute; left:380px;">x</button>
+          <button @click="click_delCart(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:380px;">x</button>
         </li>
       </ul>
     </div>
@@ -20,9 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import {useCartStore} from "@/stores/cartStroe";
+import {useCartStore} from "@/stores/cartStore";
 import axios from "@/plugins/axios";
-import {reactive, ref} from "vue";
 
 type useType = {
   name: string,
@@ -34,29 +33,25 @@ type useType = {
 const cartStore = useCartStore();
 const {allPrice, cartList, minusCnt, plusCnt, delCart, order} = cartStore;
 
-const click_minusCnt = (cart: useType) => {
-  minusCnt(cart);
+const click_minusCnt = (cart: useType, index: number) => {
+  minusCnt(cart, index);
 }
 
 const click_plusCnt = (cart: useType) => {
   plusCnt(cart);
 }
 
-const click_delCart = (cart: useType) => {
-  delCart(cart);
+const click_delCart = (cart: useType, index: number) => {
+  delCart(cart, index);
 }
 
 const click_order = async () => {
-
   await order_axios();
   order();
 }
 
-
 const order_axios = async () => {
-  const data = Array.from(cartList);
-  // let data2 = JSON.stringify(data);
-  const response = await axios.post('/api/coffee2', data)
+  const response = await axios.post('/api/coffee2', cartList)
 
 }
 

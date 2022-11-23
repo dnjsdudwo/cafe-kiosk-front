@@ -29,7 +29,7 @@
 
               <v-card-actions>
                 <v-btn variant="outlined"
-                       @click="click_addCart(menu ,index)">
+                       @click="click_selectMenu(menuList[index])">
                   선택
                 </v-btn>
               </v-card-actions>
@@ -38,12 +38,15 @@
         </v-col>
       </v-row>
     </v-container>
+    <Modal :selectMenu="selectMenu" />
   </div>
+
 </template>
 
 <script setup lang="ts">
-import {computed, reactive} from "vue";
-import {useCartStore} from "@/stores/cartStroe";
+import {reactive, ref} from "vue";
+import {useModalStore} from "@/stores/modalStore";
+import Modal from "@/components/Modal.vue";
 
 const menuList = reactive([
   {
@@ -79,11 +82,25 @@ type useType = {
   count: number
 }
 
-const cartStore = useCartStore();
-const {addCart} = cartStore;
+const modalStore = useModalStore();
+let {show_modal} = modalStore;
 
-const click_addCart = (menu: useType, index: number) => {
-  addCart(menu, index);
+
+const selectMenu = ref({
+  name: '',
+  price: 0,
+  menuInfo: '',
+  count: 0,
+})
+
+
+const click_selectMenu = (menu: useType) => {
+  selectMenu.value.name = menu.name;
+  selectMenu.value.price = menu.price;
+  selectMenu.value.menuInfo = menu.menuInfo;
+  selectMenu.value.count = menu.count;
+
+  show_modal.modal= true;
 }
 
 
