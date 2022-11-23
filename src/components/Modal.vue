@@ -3,12 +3,12 @@
     <div class="backdrop" v-if="show_modal.modal">
       <div class="modal-container">
         <h1>주문상세</h1>
-        <h2>{{}}</h2>
+        <h2>{{props.selectMenu.name}}</h2>
         <div class="contents">
           <div class="hotIce-div">
             <h3>===음료선택(필수)===</h3>
-            <label><input type="radio" name="isHotnIce" value="hot" checked>HOT</label>
-            <label><input type="radio" name="isHotnIce" value="ice">ICE</label>
+            <label><input type="radio" name="isIce" value="false">HOT</label>
+            <label><input type="radio" name="isIce" value="true" checked>ICE</label>
           </div>
           <div class="size-div">
             <h3>===사이즈 선택(필수)===</h3>
@@ -35,7 +35,9 @@ type useType = {
   name: string,
   price: number,
   menuInfo: string,
-  count: number
+  count: number,
+  isIce: boolean,
+  size : string
 }
 
 const modalSt = useModalStore();
@@ -53,8 +55,11 @@ const props = defineProps({
 })
 
 const click_order = () => {
-  const parseJson = JSON.parse(JSON.stringify(props.selectMenu));
+  // 느낌표는 ts에서 non-null assertion 연산자다. 사실상 값이 null이 아니라는 의미
+  props.selectMenu!.isIce = (document.querySelector('input[name="isIce"]:checked') as HTMLInputElement)?.value;
+  props.selectMenu!.size = (document.querySelector('input[name="sizeGroup"]:checked') as HTMLInputElement)?.value;
 
+  const parseJson = JSON.parse(JSON.stringify(props.selectMenu));
   addCart(parseJson as useType);
 
   show_modal.modal = false;
@@ -67,10 +72,12 @@ const click_order = () => {
   h1{text-align: center; margin-bottom: 40px;}
   h3{margin-bottom: 10px;}
   .btn{margin-right: 20px;}
-  .btn-div{text-align: right; margin-top:100px;}
-  label{font-weight: bold; font-size:18px; margin-right: 30px;}
-  .hotIce-div{margin-top:50px; margin-bottom: 20px;}
+  .btn-div{text-align: right; margin-top:120px;}
+  label{font-weight: bold; font-size:18px; margin-right: 70px;}
+  label:hover {cursor: pointer;}
+  .hotIce-div{margin-top:50px; margin-bottom: 100px;}
   .size-div{margin-top:50px; margin-bottom: 20px;}
+  input[type="radio"] {margin-right: 10px;}
 
   .backdrop{
     z-index: 999;

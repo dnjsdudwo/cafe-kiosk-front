@@ -5,7 +5,9 @@ type useType = {
     name: string,
     price: number,
     menuInfo: string,
-    count: number
+    count: number,
+    isIce: boolean,
+    size : string
 }
 
 export const useCartStore = defineStore("cartStore", () => {
@@ -14,7 +16,9 @@ export const useCartStore = defineStore("cartStore", () => {
 
     const addCart = (menu: useType) => {
         const chkList =
-            cartList.filter((value) => value.name == menu.name)
+            cartList.filter((value) => value.name == menu.name &&
+                                               value.size == menu.size &&
+                                               value.isIce == menu.isIce )
 
         if (chkList.length > 0) {
             plusCnt(chkList[0]);
@@ -31,7 +35,7 @@ export const useCartStore = defineStore("cartStore", () => {
         }
 
         if (cart.count == 0) {
-            cartList.splice(index);
+            cartList.splice(index, 1);
         }
     }
 
@@ -43,7 +47,7 @@ export const useCartStore = defineStore("cartStore", () => {
     const delCart = (cart: useType, index: number) => {
         allPrice.price -= cart.price * cart.count;
 
-        cartList.splice(index);
+        cartList.splice(index, 1);
     }
 
     const order = () => {

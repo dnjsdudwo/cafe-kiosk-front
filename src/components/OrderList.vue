@@ -5,10 +5,12 @@
       <h3 style="margin-bottom: 15px;">결제: {{allPrice.price}} 원</h3>
       <ul>
         <li v-for="(cart, index) in cartList" style="margin-bottom: 25px;">
-          <span>{{cart.name}}</span>
-          <button @click="click_minusCnt(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:150px;">-</button>
-          <input type="text" v-model="cart.count" style="border: 1px solid white; padding: 3px 15px; width: 50px; position: absolute; left: 200px">
-          <button @click="click_plusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:245px;">+</button>
+          <span v-if="cart.isIce === 'true' " style="margin-right: 7px">(Ice) </span>
+          <span v-else>(Hot) </span>
+          <span>{{cart.name}} {{cart.size}}</span>
+          <button @click="click_minusCnt(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:170px;">-</button>
+          <input type="text" v-model="cart.count" style="border: 1px solid white; padding: 3px 15px; width: 50px; position: absolute; left: 220px;">
+          <button @click="click_plusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:265px;">+</button>
           <button @click="click_delCart(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:380px;">x</button>
         </li>
       </ul>
@@ -27,7 +29,9 @@ type useType = {
   name: string,
   price: number,
   menuInfo: string,
-  count: number
+  count: number,
+  isIce: boolean,
+  size : string
 }
 
 const cartStore = useCartStore();
