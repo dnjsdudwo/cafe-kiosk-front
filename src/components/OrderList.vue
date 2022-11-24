@@ -1,22 +1,23 @@
 <template>
-  <div style="position: absolute; bottom: 0;">
-    <div style="width: 500px; height: 250px; border: 1px solid white; margin-left: 700px; padding: 10px; overflow: scroll; position: relative;">
-      <h2 style="text-align: center; margin-bottom: 15px">장바구니</h2>
-      <h3 style="margin-bottom: 15px;">결제: {{allPrice.price}} 원</h3>
+  <div class="container">
+    <div class="contents">
+      <h2>장바구니</h2>
+      <h3>결제: {{allPrice.price}} 원</h3>
       <ul>
-        <li v-for="(cart, index) in cartList" style="margin-bottom: 25px;">
+        <li v-for="(cart, index) in cartList">
           <span v-if="cart.isIce === 'true' " style="margin-right: 7px">(Ice) </span>
           <span v-else>(Hot) </span>
           <span>{{cart.name}} {{cart.size}}</span>
-          <button @click="click_minusCnt(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:170px;">-</button>
-          <input type="text" v-model="cart.count" style="border: 1px solid white; padding: 3px 15px; width: 50px; position: absolute; left: 220px;">
-          <button @click="click_plusCnt(cart)" style="width: 50px; font-weight:bold;position: absolute; left:265px;">+</button>
-          <button @click="click_delCart(cart, index)" style="width: 50px; font-weight:bold;position: absolute; left:380px;">x</button>
+          <span class="Individual-price">{{cart.price * cart.count}}</span>
+          <button class="btn-minus" @click="click_minusCnt(cart, index)">-</button>
+          <input class="box-count" type="text" v-model="cart.count">
+          <button class="btn-plus" @click="click_plusCnt(cart)">+</button>
+          <button class="btn-del" @click="click_delCart(cart, index)">x</button>
         </li>
       </ul>
     </div>
     <div>
-      <v-btn variant="outlined" @click="click_order()" style="position: absolute; top:210px; left: 1250px;">주문하기</v-btn>
+      <v-btn class="btn-order" variant="outlined" @click="click_order()">주문하기</v-btn>
     </div>
   </div>
 </template>
@@ -31,11 +32,20 @@ type useType = {
   menuInfo: string,
   count: number,
   isIce: boolean,
-  size : string
+  size : string,
+  type: string
 }
 
 const cartStore = useCartStore();
-const {allPrice, cartList, minusCnt, plusCnt, delCart, order} = cartStore;
+const {
+        allPrice
+       ,cartList
+       ,minusCnt
+       ,plusCnt
+       ,delCart
+       ,resultMessage
+       ,init_order
+       ,order_axios } = cartStore;
 
 const click_minusCnt = (cart: useType, index: number) => {
   minusCnt(cart, index);
@@ -50,13 +60,23 @@ const click_delCart = (cart: useType, index: number) => {
 }
 
 const click_order = async () => {
+  resultMessage();
   await order_axios();
-  order();
-}
-
-const order_axios = async () => {
-  const response = await axios.post('/api/coffee2', cartList)
-
+  init_order();
 }
 
 </script>
+
+<style scoped>
+  .container{position: absolute; bottom: 0;}
+  .contents{width: 600px; height: 250px; border: 1px solid white; margin-left: 650px; padding: 10px; overflow: scroll; position: relative;}
+  h2{text-align: center; margin-bottom: 15px;}
+  h3{margin-bottom: 15px;}
+  li{margin-bottom: 25px;}
+  .Individual-price{position: absolute; left: 220px;}
+  .btn-minus{width: 50px; font-weight:bold;position: absolute; left:270px;}
+  .box-count{border: 1px solid white; padding: 3px 15px; width: 50px; position: absolute; left: 320px;}
+  .btn-plus{width: 50px; font-weight:bold;position: absolute; left:365px;}
+  .btn-del{width: 50px; font-weight:bold;position: absolute; left:480px;}
+  .btn-order{position: absolute; top:210px; left: 1300px;}
+</style>

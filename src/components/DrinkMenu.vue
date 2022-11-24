@@ -54,24 +54,28 @@ const menuList = reactive([
     , price: 3000
     , menuInfo: "생레몬 두 개가 들어가서 레몬 맛이 풍부한 에이드/티"
     , count : 0
+    , type : "drink"
   }
   , {
     name: "자몽 에이드"
     , price: 3000
     , menuInfo: "생자몽 하나가 들어가서 자몽 맛이 풍부한 에이드/티"
     , count : 0
+    , type : "drink"
   }
   , {
     name: "인크레드불"
     , price: 3500
     , menuInfo: "바쁜 일상생활에 활력을 불어넣어주는 새콤달콤한 음료"
     , count : 0
+    , type : "drink"
   }
   , {
     name: "파인애플주스"
     , price: 2500
     , menuInfo: "새콤달콤 과즙가득 파인애플주스"
     , count : 0
+    , type : "drink"
   }
 ])
 
@@ -79,7 +83,8 @@ type useType = {
   name: string,
   price: number,
   menuInfo: string,
-  count: number
+  count: number,
+  type: string
 }
 
 const modalStore = useModalStore();
@@ -91,6 +96,7 @@ const selectMenu = ref({
   price: 0,
   menuInfo: '',
   count: 0,
+  type: ''
 })
 
 
@@ -99,6 +105,7 @@ const click_selectMenu = (menu: useType) => {
   selectMenu.value.price = menu.price;
   selectMenu.value.menuInfo = menu.menuInfo;
   selectMenu.value.count = menu.count;
+  selectMenu.value.type = menu.type;
 
   show_modal.modal= true;
 }

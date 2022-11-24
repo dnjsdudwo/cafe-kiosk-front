@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {reactive, ref} from "vue";
+import axios from "@/plugins/axios";
 
 type useType = {
     name: string,
@@ -7,7 +8,8 @@ type useType = {
     menuInfo: string,
     count: number,
     isIce: boolean,
-    size : string
+    size : string,
+    type: string,
 }
 
 export const useCartStore = defineStore("cartStore", () => {
@@ -50,16 +52,58 @@ export const useCartStore = defineStore("cartStore", () => {
         cartList.splice(index, 1);
     }
 
-    const order = () => {
+    const resultMessage = () => {
         if(cartList.length == 0) {
             alert("음료를 선택해 주세요");
-            return;
         }else{
-            cartList.splice(0, cartList.length);
-            allPrice.price = 0;
             alert("주문이 완료 되었습니다.");
         }
     }
 
-    return {allPrice, cartList, addCart, minusCnt, plusCnt, delCart, order};
+    const init_order = () => {
+        if(cartList.length != 0) {
+            cartList.splice(0, cartList.length);
+            allPrice.price = 0;
+
+            coffeeList.splice(0, coffeeList.length);
+            drinkList.splice(0, drinkList.length);
+        }
+    }
+
+    const coffeeList: useType[] = [];
+    const drinkList: useType[] = [];
+
+    const splitList = () => {
+        cartList.forEach((value) => {
+            if(value.type == 'coffee') {
+                coffeeList.push(value);
+            }else if(value.type == 'drink') {
+                drinkList.push(value);
+            }
+        })
+
+    }
+
+    const order_axios = async () => {
+        splitList();
+        const priceRes = await axios.post('/api/allPrice', allPrice.price)
+        if(coffeeList.length > 0){
+            const response = await axios.post('/api/coffee', coffeeList)
+        }
+        if(drinkList.length > 0){
+            const response = await axios.post('/api/drink', drinkList)
+        }
+    }
+
+    return {
+             allPrice
+            ,cartList
+            ,addCart
+            ,minusCnt
+            ,plusCnt
+            ,delCart
+            ,resultMessage
+            ,init_order
+            ,order_axios
+           };
 });

@@ -6,15 +6,15 @@
         <h2>{{props.selectMenu.name}}</h2>
         <div class="contents">
           <div class="hotIce-div">
-            <h3>===음료선택(필수)===</h3>
-            <label><input type="radio" name="isIce" value="false">HOT</label>
+            <h3>==== 음료선택 ====</h3>
+            <label v-if="props.selectMenu.type === 'coffee'"><input type="radio" name="isIce" value="false">HOT</label>
             <label><input type="radio" name="isIce" value="true" checked>ICE</label>
           </div>
           <div class="size-div">
-            <h3>===사이즈 선택(필수)===</h3>
-            <label><input type="radio" name="sizeGroup" value="S">S</label>
+            <h3>==== 사이즈 선택 ====</h3>
+            <label><input type="radio" name="sizeGroup" value="S">S ( -500원 )</label>
             <label><input type="radio" name="sizeGroup" value="M" checked>M</label>
-            <label><input type="radio" name="sizeGroup" value="L">L</label>
+            <label><input type="radio" name="sizeGroup" value="L">L ( +500원 )</label>
           </div>
         </div>
         <div class="btn-div">
@@ -37,7 +37,8 @@ type useType = {
   menuInfo: string,
   count: number,
   isIce: boolean,
-  size : string
+  size : string,
+  type: string
 }
 
 const modalSt = useModalStore();
@@ -58,6 +59,11 @@ const click_order = () => {
   // 느낌표는 ts에서 non-null assertion 연산자다. 사실상 값이 null이 아니라는 의미
   props.selectMenu!.isIce = (document.querySelector('input[name="isIce"]:checked') as HTMLInputElement)?.value;
   props.selectMenu!.size = (document.querySelector('input[name="sizeGroup"]:checked') as HTMLInputElement)?.value;
+
+  switch(props.selectMenu!.size) {
+    case 'S' : props.selectMenu!.price -= 500; break;
+    case 'L' : props.selectMenu!.price += 500; break;
+  }
 
   const parseJson = JSON.parse(JSON.stringify(props.selectMenu));
   addCart(parseJson as useType);
