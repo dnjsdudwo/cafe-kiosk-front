@@ -1,31 +1,23 @@
 import {useItemStore} from "@/stores/orderItemStore";
 import instance from "@/plugins/axios";
 
-const addItem = async (data:FormData,url:string) => {
-    try {
-        const response =  instance.post(url,data,{
-        headers: {'Content-Type': 'multipart/form-data'}
-        });
+const addItem = async (data:object,url:string) => {
+        const response =  instance.post(url,data);
         return response;
-    }
-    catch (e) {
-        console.log(e)
-        return;
-    }
 }
 
-const addCoffee = async (data:FormData) => {
+const addCoffee = async (data:object) => {
     const useItem = useItemStore();
     const {coffees} = useItem
 
     const url = '/api/add/coffee';
-    const response =  await addItem(data,url)
-    response?.data.map((x:any, i:number) => {
-        coffees[i] = response?.data[i];
-    })
+        const response =  await addItem(data,url)
+        response?.data.map((x:any, i:number) => {
+            coffees[i] = response?.data[i];
+        })
 }
 
-const addDrink = async (data:FormData) => {
+const addDrink = async (data:object) => {
     const useItem = useItemStore();
     const {drinks} = useItem
 

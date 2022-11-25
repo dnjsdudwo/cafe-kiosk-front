@@ -25,6 +25,7 @@ type dataType = {
 type itemType = {
     name:string,
     type:string,
+    img_url:string
 }
 
 
@@ -68,8 +69,39 @@ const chkAddItem = (data:itemType) => {
         response.modal  = createModal('알림','음료 이름은 필수사항 입니다.','',null,null);
         return response;
     }
+    // else if(data.img_url == '#'){
+    //     response.modal  = createModal('알림','이미지를 추가해주세요.','',null,null);
+    //     return response;
+    // }
+
     response.chk = true;
     return response;
 }
 
-export {putOrder,chkOrder,chkDetailOrder,chkAddItem}
+const chkImageValidation = (file:FileList) => {
+    let validation = true;
+    let message = '';
+
+    if (file.length > 1) {
+        validation= false;
+        message = `파일은 한개만 등록 가능합니다. `
+    }
+
+    if (file[0].size > 1024 * 1024 * 5) {
+        message = `${message}파일의 용량은 5MB 이하만 가능합니다. `;
+        validation = false;
+    }
+
+    if (file[0].type.indexOf('image') < 0) {
+        message = `${message}이미지 파일만 업로드 가능합니다. `;
+        validation = false;
+    }
+
+    if(!validation) {
+        alert(message);
+    }
+    return validation;
+}
+
+
+export {putOrder,chkOrder,chkDetailOrder,chkAddItem,chkImageValidation}

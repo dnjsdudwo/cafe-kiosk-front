@@ -20,7 +20,7 @@ instance.interceptors.response.use(
     return res;
   },
   (error) => {
-    return Promise.reject(error);
+    return alert('TIME_STAMP : '+error.response.data.timeStamp+'\nCODE : '+error.response.data.code+"\nMESSAGE : "+error.response.data.message);
   }
 );
 

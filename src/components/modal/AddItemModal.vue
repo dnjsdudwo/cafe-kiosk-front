@@ -12,7 +12,7 @@
                 <option value="drink">음료</option>
               </select>
             </div>
-            <div class="img_area" :style="{backgroundImage:`url(${item.img_url})`}"
+            <div class="img_area" :style="{backgroundImage:`url(${tmpImage})`}"
                  @drop.prevent="imgUpload"
                  @dragenter.prevent
                  @dragover.prevent>
@@ -62,20 +62,22 @@
 
 <script setup lang="ts">
 import {useModalStore} from "@/stores/modalStore";
-import {computed, reactive, toRefs} from "vue";
-import {addCoffee,addDrink} from "@/api/axiosItem";
-import {chkAddItem} from "@/api/putOrderItem";
+import {computed, reactive, ref, toRefs} from "vue";
+import {addCoffee, addDrink} from "@/api/axiosItem";
+import {chkAddItem, chkImageValidation} from "@/api/putOrderItem";
+import {fileUpload} from "@/api/fileAPI";
 
 const useStore = useModalStore();
 
 const {show_add_item_modal,show_fail_modal} = toRefs(useStore);
 const formData = new FormData();
 
+const tmpImage = ref("#");
+
 const item = reactive({
   name:'',
   price:0,
   img_url:'#',
-  img_file:'',
   description:'',
   isMilk:true,
   isIce:true,
@@ -103,48 +105,60 @@ const errModal = () => {
   return chkAddItem(item).modal;
 }
 
-type dataType = {
-  img_file: any
+type imageType = {
+  dataTransfer: any
+  img_file: object
   img_url: string
+}
+
+type dataType = {
+
   name:string
-  price:string
+  price:number
   description:string
-  isMilk:string
-  isIce:string
+  img_url:string
+  isMilk:boolean
+  isIce:boolean
   type:string
 }
 
 const addBeverage = async (data:dataType) =>{
-    if(!chkAddItem(data).chk){
-      show_fail_modal.value = true;
-      return;
-    }
+    // if(!chkAddItem(data).chk){
+    //   show_fail_modal.value = true;
+    //   return;
+    // }
 
-  formData.append('coffee.name',data.name)
-  formData.append('coffee.price',data.price)
-  formData.append('coffee.description',data.description)
-  formData.append('coffee.isMilk',data.isMilk)
-  formData.append('coffee.isIce',data.isIce)
-  formData.append('coffee.type',data.type)
+  let type = '';
+
+
   if(data.type == 'coffee'){
-    await addCoffee(formData);
+    type = 'coffee'
+    await addCoffee(data);
   }
   else if(data.type == 'drink'){
-    await addDrink(formData);
+    type = 'drink'
+    await addDrink(data);
   }
   show_add_item_modal.value = false;
 }
 
-const imgUpload = (e:any) => {
-  const image = e.dataTransfer.files[0];
+
+
+
+const imgUpload = async (e:imageType) => {
+  const imageChk = e.dataTransfer.files;
+  if(!chkImageValidation(imageChk)){
+    return;
+  }
+  const image = imageChk[0];
   const url = URL.createObjectURL(image);
-  item.img_url = url;
-  item.img_file = image;
+  tmpImage.value = url;
   formData.append('img_file',image);
+  item.img_url =  await fileUpload(formData);
 }
 
 const removeImg = () => {
-  item.img_url = '#';
+  tmpImage.value = '#';
 }
 
 </script>
