@@ -20,6 +20,10 @@ instance.interceptors.response.use(
     return res;
   },
   (error) => {
+    if(error.response.request.statusText === 'Unauthorized'){
+      alert('로그인이 필요한 서비스입니다.');
+      return ;
+    }
     return alert('TIME_STAMP : '+error.response.data.timeStamp+'\nCODE : '+error.response.data.code+"\nMESSAGE : "+error.response.data.message);
   }
 );

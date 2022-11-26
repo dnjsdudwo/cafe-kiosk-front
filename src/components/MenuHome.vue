@@ -2,45 +2,11 @@
 	<LoadingProgress :isView="isView"></LoadingProgress>
 	<CustomAlert></CustomAlert>
 	<div>
-			<v-container>
-				<h1>Event</h1>
-				<v-divider></v-divider>
-				<v-row no-gutters>
-					<v-col
-							v-for="n in 6"
-							:key="n"
-							cols="12"
-							sm="4"
-					>
-						<v-sheet class="ma-2 pa-2">
-							<v-card
-									class="mx-auto"
-									max-width="400"
-									variant="outlined"
-							>
-								<v-card-item>
-									<div>
-										<div class="text-overline mb-1">
-											OVERLINE
-										</div>
-										<div class="text-h6 mb-1">
-											Headline
-										</div>
-										<div class="text-caption">Greyhound divisely hello coldly fonwderfully</div>
-									</div>
-								</v-card-item>
-								
-								<v-card-actions>
-									<v-btn variant="outlined"
-									       @click="testLoading()">
-										Button
-									</v-btn>
-								</v-card-actions>
-							</v-card>
-						</v-sheet>
-					</v-col>
-				</v-row>
-      </v-container>
+    <div>
+      <input @keyup.enter="login" type="text" placeholder="Id" v-model="userId" >
+      <input @keyup.enter="login" type="password" placeholder="password" v-model="userPassword" >
+      <button @click="login">로그인</button>
+    </div>
     <div v-if="show_success_modal">
       <addItemModal/>
     </div>
@@ -54,12 +20,16 @@ import LoadingProgress from "./LoadingProgress.vue"
 import CustomAlert from '@/components/CustomAlert.vue'
 import {createModal} from "@/components/modal/createNewModal";
 import {useModalStore} from "@/stores/modalStore";
+import {axiosLogin} from "@/api/axiosLogin";
 
 const useStore = useModalStore();
 const { show_success_modal } = toRefs(useStore);
 
 const isView = ref(false);
 const tes  = ref("");
+
+const userId = ref("");
+const userPassword = ref("");
 
 const test = reactive({
 	test1: 1,
@@ -76,4 +46,14 @@ const testLoading =  () => {
 	// isView.value = true;
 	 show_success_modal.value = true;
 }
+
+const login = () => {
+  try {
+    axiosLogin(userId.value,userPassword.value);
+  }
+  catch (e) {
+    console.log(e)
+  }
+}
+
 </script>
