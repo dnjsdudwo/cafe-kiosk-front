@@ -8,6 +8,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    instance.defaults.headers.common["Access-Token"] = 'Bearer '+localStorage.getItem("accessToken");
+    instance.defaults.headers.common["Refresh-Token"] = 'Bearer '+localStorage.getItem("refreshToken");
     return config;
   },
   (error) => {
@@ -20,10 +22,6 @@ instance.interceptors.response.use(
     return res;
   },
   (error) => {
-    if(error.response.request.statusText === 'Unauthorized'){
-      alert('세션이 만료되었거나 로그인을 해주세요.');
-      return ;
-    }
     return alert('TIME_STAMP : '+error.response.data.timeStamp+'\nCODE : '+error.response.data.code+"\nMESSAGE : "+error.response.data.message);
   }
 );
