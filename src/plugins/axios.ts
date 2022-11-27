@@ -21,7 +21,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     if(error.response.request.statusText === 'Unauthorized'){
-      alert('로그인이 필요한 서비스입니다.');
+      alert('세션이 만료되었거나 로그인을 해주세요.');
       return ;
     }
     return alert('TIME_STAMP : '+error.response.data.timeStamp+'\nCODE : '+error.response.data.code+"\nMESSAGE : "+error.response.data.message);
