@@ -77,7 +77,7 @@ import {computed, reactive, ref} from "vue";
 import LoadingProgress from "./LoadingProgress.vue"
 import CustomAlert from '@/components/CustomAlert.vue'
 import axios from "axios";
-import {cartStore} from "@/store/cartStore";
+import {useCartStore} from "@/store/cartStore";
 
 
 const isView = ref(false);
@@ -97,7 +97,7 @@ const isView = ref(false);
       if (response.data > 0 ){ alert("성공적으로 주문되었습니다")}
     }
 
-    const cartList = cartStore();
+    const cartList = useCartStore();
 
     const sumCart = computed(()=> {
       let sum = 0;
