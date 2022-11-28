@@ -47,9 +47,9 @@ const testLoading =  () => {
 	 show_success_modal.value = true;
 }
 
-const login = () => {
+const login = async () => {
   try {
-    axiosLogin(userId.value,userPassword.value);
+    const response = await axiosLogin(userId.value,userPassword.value);
   }
   catch (e) {
     console.log(e)

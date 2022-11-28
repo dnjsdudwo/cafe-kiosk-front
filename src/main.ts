@@ -11,7 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, md } from 'vuetify/iconsets/md'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import VueCookies from "vue-cookies";
+import VueCookies from "vue3-cookies";
 const vuetify = createVuetify({
   components: components,
   directives,
@@ -44,6 +44,12 @@ const app = createApp(App);
 app.use(router);
 app.use(pinia);
 app.use(vuetify);
-app.use(VueCookies);
+app.use(VueCookies, {
+  expireTimes: "1d",
+  path: "/",
+  domain: "",
+  secure: false,
+  sameSite: "None"
+});
 
 app.mount("#app");
