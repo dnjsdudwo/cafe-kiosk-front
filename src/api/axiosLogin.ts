@@ -9,8 +9,8 @@ const axiosLogin = async (id: string, pw: string) => {
         const response = await instance.get("/api/login?id=" + id + "&pw=" + pw);
         console.log(response.headers.accesstoken)
         setToken(
-            `${response.headers.accesstoken}`,
-            `${response.headers.refreshtoken}`
+            `Bearer${response.headers.accesstoken}`,
+            `Bearer${response.headers.refreshtoken}`
         );
 
         console.log(useCookies().cookies.get('accessToken'))
@@ -26,7 +26,7 @@ const axiosLogin = async (id: string, pw: string) => {
       refreshToken: useCookies().cookies.get('refreshToken'),
     };
     const response = await instance.post("/api/regenerate/token", data);
-    setToken(response.data + "", useCookies().cookies.get('refreshToken'));
+      useCookies().cookies.set('accessToken',`Bearer${response.data}`);
   };
 
 const setToken = (ac: string, re: string) => {
