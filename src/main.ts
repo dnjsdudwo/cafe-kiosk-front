@@ -49,7 +49,7 @@ app.use(VueCookies, {
   path: "/",
   domain: "",
   secure: false,
-  sameSite: "None"
+  sameSite: "None",
 });
 
 app.mount("#app");
