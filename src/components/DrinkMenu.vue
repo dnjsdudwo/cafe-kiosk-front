@@ -47,37 +47,8 @@
 import {reactive, ref} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import Modal from "@/components/Modal.vue";
+import axios from "axios";
 
-const menuList = reactive([
-  {
-    name: "블루레몬 에이드"
-    , price: 3000
-    , menuInfo: "생레몬 두 개가 들어가서 레몬 맛이 풍부한 에이드/티"
-    , count : 0
-    , type : "drink"
-  }
-  , {
-    name: "자몽 에이드"
-    , price: 3000
-    , menuInfo: "생자몽 하나가 들어가서 자몽 맛이 풍부한 에이드/티"
-    , count : 0
-    , type : "drink"
-  }
-  , {
-    name: "인크레드불"
-    , price: 3500
-    , menuInfo: "바쁜 일상생활에 활력을 불어넣어주는 새콤달콤한 음료"
-    , count : 0
-    , type : "drink"
-  }
-  , {
-    name: "파인애플주스"
-    , price: 2500
-    , menuInfo: "새콤달콤 과즙가득 파인애플주스"
-    , count : 0
-    , type : "drink"
-  }
-])
 
 type useType = {
   name: string,
@@ -86,6 +57,14 @@ type useType = {
   count: number,
   type: string
 }
+
+const menuList: useType[] = reactive([]);
+
+const apiMenuList = axios.post('/api/getMenuList?type=drink').then((res) => {
+  res.data.forEach((value: useType) => {
+    menuList.push(value)
+  })
+});
 
 const modalStore = useModalStore();
 let {show_modal} = modalStore;

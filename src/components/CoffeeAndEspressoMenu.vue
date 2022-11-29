@@ -47,59 +47,29 @@
 import {reactive, ref} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import Modal from "@/components/Modal.vue";
-
-const menuList = reactive([
-  {
-    name: "아메리카노"
-    , price: 2000
-    , menuInfo: "커피의 풍미를 천천히 간단하게 즐길 수 있는 음료"
-    , count : 0
-    , type :"coffee"
-  }
-  , {
-    name: "카페라떼"
-    , price: 2500
-    , menuInfo: "우유를 더해, 보다 부드럽고 포만감을 느낄 수 있는 커피"
-    , count : 0
-    , type :"coffee"
-  }
-  , {
-    name: "콜드브루"
-    , price: 3000
-    , menuInfo: "부드러운 맛을 느낄 수 있는 브라질 피베리 콜드브루"
-    , count : 0
-    , type :"coffee"
-  }
-  , {
-    name: "카푸치노"
-    , price: 2500
-    , menuInfo: "커피의향, 우유의맛, 거품의 촉감을 한 번에 즐길 수 있는 음료"
-    , count : 0
-    , type :"coffee"
-  }
-  , {
-    name: "꿀커피"
-    , price: 3000
-    , menuInfo: "아메리카노에 꿀을더해 자극없이 편안하게 즐길 수 있는 음료"
-    , count : 0
-    , type :"coffee"
-  }
-  , {
-    name: "카페모카"
-    , price: 3500
-    , menuInfo: "달달하고 휘핑과 함께 즐길 수 있는 커피"
-    , count : 0
-    , type :"coffee"
-  }
-])
+import axios from "axios";
 
 type useType = {
   name: string,
   price: number,
   menuInfo: string,
   count: number,
-  type: string
+  type: string,
+  size: string,
+  isIce: string
 }
+
+
+const menuList: useType[] = reactive([]);
+
+const apiMenuList = axios.post('/api/getMenuList?type=coffee').then((res) => {
+  res.data.forEach((value: useType) => {
+    menuList.push(value)
+  })
+});
+
+
+
 
 const modalStore = useModalStore();
 let {show_modal} = modalStore;
