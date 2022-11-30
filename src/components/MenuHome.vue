@@ -32,7 +32,7 @@
 
               <v-card-actions>
                 <v-btn variant="outlined"
-                       @click="click()">
+                       @click="">
                   Button
                 </v-btn>
               </v-card-actions>
@@ -40,47 +40,22 @@
           </v-sheet>
         </v-col>
       </v-row>
+      <add-menu-list></add-menu-list>
+      <div style="position: absolute; bottom: 20px;">
+        <v-btn variant="outlined" style="width: 150px; height: 50px;" @click="add_list.modal = true">상품추가</v-btn>
+      </div>
     </v-container>
   </div>
 
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
 import LoadingProgress from "./LoadingProgress.vue"
 import CustomAlert from '@/components/CustomAlert.vue'
-import {useMberStore} from "@/sotre/mberStore";
+import AddMenuList from "@/components/AddMenuList.vue";
+import {useModalStore} from "@/stores/modalStore";
 
-const test1 = useMberStore();
+const modalStore = useModalStore();
+let {add_list} = modalStore;
 
-const { menu, userId, addMenu } = test1;
-
-console.log(menu)
-
-const isView = ref(false);
-const tes  = ref("");
-
-const click = () => {
-  addMenu({
-    name: 'ddd',
-    isIce: false
-  });
-
-  console.log(menu)
-}
-
-const test = reactive({
-  test1: 1,
-  test2: 3
-})
-
-const testInput = () => {
-  console.log(tes.value)
-}
-
-const testLoading = async () => {
-
-  // isView.value = true;
-  await alert();
-}
 </script>
