@@ -24,8 +24,6 @@ instance.interceptors.response.use(
   (res) => {
     const mberStore = useMberStore();
 
-      console.log(res.headers.newtoken)
-
     if (res.headers.newtoken) {
       mberStore.token = res.headers.newtoken;
     }
@@ -33,10 +31,6 @@ instance.interceptors.response.use(
     return res;
   }, async (error) => {
       const mberStore = useMberStore();
-
-      if (error.response.status === 415) {
-        return instance.post(error.config);
-      }
 
       if (error.response.data) {
         // ==로 비교하면 false가 나온다
