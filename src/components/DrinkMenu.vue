@@ -25,7 +25,7 @@
                     New
                   </div>
                   <div class="text-h6 mb-1">
-                    {{n.name}}
+                    {{n.menuNm}}
                   </div>
                   <div class="text-caption" >{{'$' + n.price}}</div>
                 </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import {computed, reactive, ref, toRefs} from "vue";
+import {computed, onMounted, reactive, ref, toRefs} from "vue";
 import LoadingProgress from "./LoadingProgress.vue";
 import CustomAlert from '@/components/CustomAlert.vue';
 import axios from "axios";
@@ -71,11 +71,15 @@ import { useModalStore } from "@/store/modalStore";
 import OrderDetailPopup from "@/popup/orderDetailPopup.vue";
 
 const isView = ref(false);
-const drinkList = reactive([
-  {name:'딸기스무디',price:5000,isIce:true,base:'딸기',img :'src/assets/img/strawberrySmoothie.png'}
-  ,{name:'블루베리스무디',price:5000,isIce:true,base:'블루베리',img :'src/assets/img/blueberrySmoothie.png'}
-  ,{name:'자바칩프라페',price:4500,isIce:true,base:'자바칩',img :'src/assets/img/javaFrappe.png'}
-])
+
+//메뉴리스트 불러오기
+let drinkList= reactive([]);
+axios.post('/api/searchDrinkList').then((result) => {
+  const list = result.data;
+  list.forEach( info => {
+    drinkList.push(info);
+  })
+ })
 
 //주문상세팝업 오픈
 const openOrderDetail = (info) =>{

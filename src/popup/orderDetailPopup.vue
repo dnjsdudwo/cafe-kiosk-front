@@ -17,7 +17,7 @@
                     <v-img
                         width="150"
                         height="200"
-                        v-bind:src="orderDrink.img"
+                        v-bind:src="orderDrink.image"
                     ></v-img>
                   </v-col>
                   <v-col
@@ -26,7 +26,7 @@
                       class="py-2"
                   >
                     <div style="margin-top:80px;">
-                      <span style="font-weight: bolder; font-size: 20px" >{{ orderDrink.name }}</span>
+                      <span style="font-weight: bolder; font-size: 20px" >{{ orderDrink.menuNm }}</span>
                     </div>
                     <div>
                       가격 : {{ orderInfo.price }}원
@@ -134,7 +134,7 @@ const orderCnt_add = () => {
 
 //주문내역에관한 정보담기
 const orderInfo = reactive({
-    name : orderDrink.value.name,
+    name : orderDrink.value.menuNm,
     price : orderDrink.value.price,
     size : '',
     takeoutAt : '',
