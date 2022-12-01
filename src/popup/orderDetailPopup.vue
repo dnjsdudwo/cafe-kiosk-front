@@ -29,16 +29,16 @@
                       <span style="font-weight: bolder; font-size: 20px" >{{ orderDrink.name }}</span>
                     </div>
                     <div>
-                      가격 : {{orderInfo.price}}원
+                      가격 : {{ orderInfo.price }}원
                     </div>
                     <v-btn-toggle>
-                      <v-btn  @click="minusClick();">
+                      <v-btn  @click="orderCnt_remove();">
                         <h1>-</h1>
                       </v-btn>
                       <v-btn>
-                        {{ orderCnt }}
+                        {{ orderInfo.cnt }}
                       </v-btn>
-                      <v-btn @click="plusClick();">
+                      <v-btn @click="orderCnt_add();">
                         <h1>+</h1>
                       </v-btn>
                     </v-btn-toggle>
@@ -55,17 +55,21 @@
                   v-model="orderInfo.size"
                   inline
               >
-                <v-radio label="Small(-500)" value="S" @change="changePrice();"></v-radio>
-                <v-radio label="Medium" value="M" @change="changePrice();"></v-radio>
-                <v-radio label="Large(+500)" value="L" @change="changePrice();" ></v-radio>
+                <v-radio
+                    v-for="size in orderSize"
+                    :key ="size"
+                    :label = size.name
+                    :value = size.value
+                    @change="changePrice();"
+                 ></v-radio>
               </v-radio-group>
               <h2>TakeOut</h2>
               <v-radio-group
                   v-model="orderInfo.takeoutAt"
                   inline
               >
-                <v-radio label="포장" value="Y"  ></v-radio>
-                <v-radio label="매장" value="N"  ></v-radio>
+                <v-radio label="포장" value="true"  ></v-radio>
+                <v-radio label="매장" value="false"  ></v-radio>
               </v-radio-group>
             </slot>
           </div>
@@ -102,49 +106,70 @@ import {computed, reactive, ref, toRefs} from "vue";
 import {useCartStore} from "@/store/cartStore";
 
 const { openOrderDetail_popup, orderDrink } = toRefs(useModalStore());
-;
+
+
+//팝업닫기
 const closePopup = () =>{
   orderDrink.value={};
   openOrderDetail_popup.value = false;
 }
+
 /*const props = defineProps({
   info : Object
 })
-const { info } = toRefs(props);*/
+const { info } = toRefs(props);
+console.log(info.value)*/;
 
-const orderCnt = ref(1);
-const minusClick = () =>{
-  if(orderCnt.value > 1) {
-    orderCnt.value--;
+//수량체크
+const orderCnt_remove = () =>{
+  if(orderInfo.cnt > 1) {
+    orderInfo.cnt--;
   }else{
     alert("수량은 최소 1개이상 선택하셔야합니다!")
   }
 }
-const plusClick = () => {
-  orderCnt.value++;
+const orderCnt_add = () => {
+  orderInfo.cnt++;
 }
 
-const sumCount = computed(()=>{
-  let sum = orderDrink.value.price * orderCnt.value
-  return { sum }
-})
-
+//주문내역에관한 정보담기
 const orderInfo = reactive({
     name : orderDrink.value.name,
     price : orderDrink.value.price,
     size : '',
     takeoutAt : '',
-    cnt : 1
+    cnt:1
 })
 
 //장바구니에 담기
 const cart = useCartStore();
 const { addList } = cart;
 const addCartList = () =>{
-  addList(orderInfo);
-  closePopup();
+  if (!orderValidation()){
+    return;
+  }else {
+    addList(orderInfo);
+    closePopup();
+  }
+}
+const orderValidation = () =>{
+    if (orderInfo.size==''){
+      alert("사이즈를 선택해주세요");
+      return false;
+    }
+    if (orderInfo.takeoutAt==''){
+      alert("포장유무를 선택해주세요");
+      return false;
+    }
+  return true;
 }
 
+//사이즈 선택시마다 값 변경
+const orderSize = [
+    {name :'Small(-500)', value:'S'},
+    {name :'Medium', value:'M'},
+    {name :'Large(+500)', value:'L'}
+]
 const originPrice = Number(JSON.stringify(JSON.parse(orderDrink.value.price)));
 const changePrice = () => {
   if (orderInfo.size=='S'){

@@ -32,12 +32,12 @@
               </v-card-item>
             </v-card>
           </v-sheet>
+          <div v-if="openOrderDetail_popup">
+            <OrderDetailPopup :info="n"/>
+          </div>
         </v-col>
       </v-row>
     </v-container>
-    <div v-if="openOrderDetail_popup">
-      <OrderDetailPopup v-bind:info="selectDrink"/>
-    </div>
     <v-container>
       <h1>Cart</h1>
       <v-divider></v-divider>
@@ -77,6 +77,12 @@ const drinkList = reactive([
   ,{name:'자바칩프라페',price:4500,isIce:true,base:'자바칩',img :'src/assets/img/javaFrappe.png'}
 ])
 
+//주문상세팝업 오픈
+const openOrderDetail = (info) =>{
+  orderDrink.value = info;
+  openOrderDetail_popup.value = true;
+}
+
 const juice = (info) => {
   const uri = '/api/juice'
   order(uri, info)
@@ -101,18 +107,17 @@ const order = async (uri, info) => {
 
 }
 
-//장바구니에 담은 항목들
+//장바구니 리스트
 const cart = useCartStore();
+const { list } = cart;
 
-
-const { list, addList } = cart;
 
 const sumCart = computed(()=> {
   let sum = 0;
   let cnt = 0;
    list.forEach( info => {
-    cnt +=1;
-    sum += Number(info.price);
+    cnt += info.cnt;
+    sum += info.price * info.cnt;
   })
   return {sum, cnt}
 })
@@ -129,8 +134,4 @@ const modals = useModalStore();
 //구조 분해 할당을 통해 값을 가져올 때 반응형을 잃지 않도록 도와주는 toRefs사용
 const { openOrderDetail_popup , orderDrink } = toRefs(modals);
 
-const openOrderDetail = (info) =>{
-    orderDrink.value = info;
-    openOrderDetail_popup.value = true;
-}
 </script>
