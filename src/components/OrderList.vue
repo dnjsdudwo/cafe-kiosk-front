@@ -31,7 +31,7 @@ type useType = {
   price: number,
   menuInfo: string,
   count: number,
-  isIce: boolean,
+  isIce: string,
   size : string,
   type: string
 }

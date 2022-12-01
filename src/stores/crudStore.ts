@@ -3,6 +3,7 @@ import {reactive, ref} from "vue";
 import axios from "axios";
 
 type useType = {
+    menu_no: number,
     name: string,
     price: number,
     menuInfo: string,
@@ -15,6 +16,7 @@ type useType = {
 export const useCrudStore = defineStore("crudStore", () => {
 
     const selectMenu = ref({
+        menu_no: 0,
         name: '',
         price: 0,
         menuInfo: '',
@@ -23,6 +25,7 @@ export const useCrudStore = defineStore("crudStore", () => {
     })
 
     const reSelectMenu = (menu: useType) => {
+        selectMenu.value.menu_no = menu.menu_no;
         selectMenu.value.name = menu.name;
         selectMenu.value.price = menu.price;
         selectMenu.value.menuInfo = menu.menuInfo;
@@ -35,7 +38,7 @@ export const useCrudStore = defineStore("crudStore", () => {
         const isVal = confirm("메뉴를 삭제 하시겠습니까?");
         if(isVal){
             const delMenu = axios.post("/api/delMenuList", data);
-            alert("삭제되었습니다");
+            alert("삭제 되었습니다");
             window.location.reload();
         }
     }

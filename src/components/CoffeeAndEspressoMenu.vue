@@ -20,7 +20,11 @@
                 <div>
                   <div class="text-overline mb-1">
                   </div>
-                  <div class="text-h6 mb-1">{{ menu.name }} <span class="x-span" @click="click_del_menu(menu.menu_no)">x</span></div>
+                  <div class="text-h6 mb-1">
+                    {{ menu.name }}
+                    <span class="x-span" @click="click_del_menu(menu.menu_no)">x</span>
+                    <span class="o-span" @click="click_upd_menu(menu)">o</span>
+                  </div>
                   <div class="text-md-h6">{{ menu.price }}원</div>
                   <br>
                   <div class="text-caption">{{ menu.menuInfo }}</div>
@@ -39,6 +43,7 @@
       </v-row>
     </v-container>
     <Modal :selectMenu="selectMenu"/>
+    <updMenuList :selectMenu="selectMenu"></updMenuList>
   </div>
 
 </template>
@@ -48,6 +53,7 @@ import {reactive} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import {useCrudStore} from "@/stores/crudStore";
 import Modal from "@/components/Modal.vue";
+import updMenuList from "@/components/AddMenuList.vue";
 import axios from "axios";
 
 type useType = {
@@ -71,7 +77,7 @@ const apiMenuList = axios.post('/api/getMenuList?type=coffee').then((res) => {
 });
 
 const modalStore = useModalStore();
-let {show_modal} = modalStore;
+let {show_modal, upd_list} = modalStore;
 
 const crudStore = useCrudStore();
 let {selectMenu, reSelectMenu, delMenu} = crudStore;
@@ -86,7 +92,13 @@ const click_del_menu = (no: number) => {
   delMenu(no);
 }
 
+const click_upd_menu = (menu: useType) => {
+  reSelectMenu(menu);
+  upd_list.modal = true;
+}
+
 </script>
 <style scoped>
 .x-span{position: absolute; right: 10px; top: 0; cursor: pointer;}
+.o-span{position: absolute; right: 30px; top: 0; cursor: pointer;}
 </style>

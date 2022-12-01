@@ -7,5 +7,7 @@ export const useModalStore = defineStore("modalStore", () => {
 
     let add_list = reactive({modal:false});
 
-    return {show_modal, add_list};
+    let upd_list = reactive({modal:false});
+
+    return {show_modal, add_list, upd_list};
 })
