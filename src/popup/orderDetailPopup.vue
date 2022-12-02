@@ -47,7 +47,6 @@
               </v-container>
             </slot>
           </div>
-          {{orderInfo}}
           <div class="modal-body">
             <slot name="body">
               <h2>Size</h2>
@@ -62,14 +61,6 @@
                     :value = size.value
                     @change="changePrice();"
                  ></v-radio>
-              </v-radio-group>
-              <h2>TakeOut</h2>
-              <v-radio-group
-                  v-model="orderInfo.takeoutAt"
-                  inline
-              >
-                <v-radio label="포장" value="true"  ></v-radio>
-                <v-radio label="매장" value="false"  ></v-radio>
               </v-radio-group>
             </slot>
           </div>
@@ -137,7 +128,6 @@ const orderInfo = reactive({
     name : orderDrink.value.menuNm,
     price : orderDrink.value.price,
     size : '',
-    takeoutAt : '',
     cnt:1
 })
 

@@ -41,7 +41,8 @@
     <v-container>
       <h1>Cart</h1>
       <v-divider></v-divider>
-        <v-list
+      <br>
+      <v-list
             v-for="cart in list"
             :key="cart">
             <v-list-item>{{cart.name +"("+cart.size+") " +cart.price + "원 " + cart.cnt}}개</v-list-item>
@@ -51,10 +52,21 @@
         <h4>결제금액 : {{sumCart.sum}} 원</h4>
       </div>
       <br>
+      <v-radio-group
+          v-model="takeoutAt"
+          inline
+      >
+        <v-radio label="포장" value="Y"  ></v-radio>
+        <v-radio label="매장" value="N"  ></v-radio>
+      </v-radio-group>
       <div>
         <v-btn variant="outlined"
-               @click="allBuy_click()">
+               @click="order_click()">
           주문하기
+        </v-btn>
+        <v-btn variant="outlined"
+               @click="orderCancel_click()">
+          취소
         </v-btn>
       </div>
     </v-container>
@@ -72,9 +84,11 @@ import OrderDetailPopup from "@/popup/orderDetailPopup.vue";
 
 const isView = ref(false);
 
+const takeoutAt =ref('N');
+
 //메뉴리스트 불러오기
 let drinkList= reactive([]);
-axios.post('/api/searchDrinkList').then((result) => {
+axios.post('/api/searchDrinkList',{ categoryNo : 2 }).then((result) => {
   const list = result.data;
   list.forEach( info => {
     drinkList.push(info);
@@ -85,30 +99,6 @@ axios.post('/api/searchDrinkList').then((result) => {
 const openOrderDetail = (info) =>{
   orderDrink.value = info;
   openOrderDetail_popup.value = true;
-}
-
-const juice = (info) => {
-  const uri = '/api/juice'
-  order(uri, info)
-}
-
-const smoothie = (info) => {
-  const uri = '/api/smoothie'
-  order(uri, info)
-}
-
-const order = async (uri, info) => {
-  const response = await axios.post( uri,{
-    /*orderList : info*/
-    name : info.name,
-    price : info.price,
-    isIce : info.isIce,
-    base : info.base
-  })
-
-  //수정
-  if (response.data > 0){ alert("성공적으로 주문되었습니다")}
-
 }
 
 //장바구니 리스트
@@ -126,9 +116,17 @@ const sumCart = computed(()=> {
   return {sum, cnt}
 })
 
-const allBuy_click = async () => {
-   const response = await axios.post('/api/juice',{
-     orderList : list
+//장바구니 비우기
+const orderCancel_click = () => {
+  cart.list.length=0;
+};
+
+
+//장바구니 전체 주문하기
+const order_click = async () => {
+   const response = await axios.post('/api/insertOrder',{
+     orderList : list,
+     takeoutAt : takeoutAt.value
    })
   if (response.data > 0){ alert("성공적으로 주문되었습니다")}
 }
