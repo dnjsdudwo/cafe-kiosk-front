@@ -8,7 +8,7 @@
 				<v-tab @click="goMenu('/')">
 					Home
 				</v-tab>
-				<v-tab @click="goMenu('/coffeeAndEspresso')">
+				<v-tab @click="goMenu('/CoffeeAndEspresso')">
 					Coffee & Espresso
 				</v-tab>
 				<v-tab @click="goMenu('/drink')">

@@ -1,6 +1,6 @@
 import axios from "axios";
-import {useMberStore} from "@/stores/mber";
-import {storeToRefs} from "pinia";
+import { useMberStore } from "@/stores/mber";
+import { storeToRefs } from "pinia";
 
 const instance = axios.create({
   headers: {
@@ -9,39 +9,38 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const mberStore = useMberStore();
+    const mberStore = useMberStore();
 
-  if (mberStore.token && !config.headers.Authorization) {
-    config.headers.Authorization = 'Bearer ' + mberStore.token;
-  }
+    if (mberStore.token && !config.headers!.Authorization) {
+        config.headers!.Authorization = "Bearer " + mberStore.token;
+    }
 
-  return config;
+    return config;
 }, (error) => {
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
 
-instance.interceptors.response.use(
-  (res) => {
+instance.interceptors.response.use((res) => {
     const mberStore = useMberStore();
 
     if (res.headers.newtoken) {
-      mberStore.token = res.headers.newtoken;
+        mberStore.token = res.headers.newtoken;
     }
 
     return res;
-  }, async (error) => {
-      const mberStore = useMberStore();
+}, async (error) => {
+    const mberStore = useMberStore();
 
-      if (error.response.data) {
-        // ==로 비교하면 false가 나온다
-        if (error.response.data.indexOf('001 Not an authorized user.') > -1) {
-          mberStore.token = mberStore.refreshToken;
-          return instance.post(error.config.url, error.config);
+    if (error.response.data) {
+        const errorMsg = error.response.data.replace(/\n|\r/g,"")
+
+        if ('001 Not an authorized user.' === errorMsg) {
+            mberStore.token = mberStore.refreshToken;
+            return instance.post(error.config.url, error.config);
         }
-      }
+    }
 
     return Promise.reject(error);
-  }
-);
+});
 
 export default instance;
