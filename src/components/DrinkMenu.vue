@@ -22,7 +22,7 @@
               <v-card-item>
                 <div>
                   <div class="text-overline mb-1">
-                    New
+                    {{ n.description }}
                   </div>
                   <div class="text-h6 mb-1">
                     {{n.menuNm}}
@@ -45,7 +45,7 @@
       <v-list
             v-for="cart in list"
             :key="cart">
-            <v-list-item>{{cart.name +"("+cart.size+") " +cart.price + "원 " + cart.cnt}}개</v-list-item>
+            <v-list-item>{{cart.name +"("+cart.size+") " +cart.orderPrice + "원 " + cart.cnt}}개</v-list-item>
         </v-list>
       <div>
         <h4>총 수량 : {{sumCart.cnt}}</h4>
@@ -84,16 +84,17 @@ import OrderDetailPopup from "@/popup/orderDetailPopup.vue";
 
 const isView = ref(false);
 
-const takeoutAt =ref('N');
+const takeoutAt =ref('Y');
 
 //메뉴리스트 불러오기
 let drinkList= reactive([]);
-axios.post('/api/searchDrinkList',{ categoryNo : 2 }).then((result) => {
+axios.post('/api/searchDrinkList',{ categoryNm : 'drink' }).then((result) => {
   const list = result.data;
   list.forEach( info => {
     drinkList.push(info);
   })
- })
+  console.log(drinkList);
+ });
 
 //주문상세팝업 오픈
 const openOrderDetail = (info) =>{
@@ -111,14 +112,14 @@ const sumCart = computed(()=> {
   let cnt = 0;
    list.forEach( info => {
     cnt += info.cnt;
-    sum += info.price * info.cnt;
+    sum += info.orderPrice * info.cnt;
   })
   return {sum, cnt}
-})
+});
 
 //장바구니 비우기
 const orderCancel_click = () => {
-  cart.list.length=0;
+  list.length = 0;
 };
 
 
@@ -128,12 +129,16 @@ const order_click = async () => {
      orderList : list,
      takeoutAt : takeoutAt.value
    })
-  if (response.data > 0){ alert("성공적으로 주문되었습니다")}
-}
+  if (response.data != 0){
+    alert("성공적으로 주문되었습니다");
+  }else {
+    alert("주문에 실패하였습니다. 다시 시도해주세요");
+  }
+  cart.list.length=0;
+};
 
-//가독성을위해 modalStore를 변수에 넣어준다.
 const modals = useModalStore();
-//구조 분해 할당을 통해 값을 가져올 때 반응형을 잃지 않도록 도와주는 toRefs사용
-const { openOrderDetail_popup , orderDrink } = toRefs(modals);
+
+const { openOrderDetail_popup, orderDrink } = toRefs(modals);
 
 </script>

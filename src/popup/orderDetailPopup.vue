@@ -29,7 +29,7 @@
                       <span style="font-weight: bolder; font-size: 20px" >{{ orderDrink.menuNm }}</span>
                     </div>
                     <div>
-                      가격 : {{ orderInfo.price }}원
+                      가격 : {{ orderInfo.orderPrice }}원
                     </div>
                     <v-btn-toggle>
                       <v-btn  @click="orderCnt_remove();">
@@ -61,6 +61,17 @@
                     :value = size.value
                     @change="changePrice();"
                  ></v-radio>
+              </v-radio-group>
+            </slot>
+          </div>
+          <div class="modal-body">
+            <slot name="body">
+              <h2>ICE/HOT</h2>
+              <v-radio-group
+                  v-model="isIceAt"
+                  inline
+              >
+                <v-radio label="ICE ONLY" value="true"  ></v-radio>
               </v-radio-group>
             </slot>
           </div>
@@ -105,6 +116,7 @@ const closePopup = () =>{
   openOrderDetail_popup.value = false;
 }
 
+const isIceAt = ref('true');
 /*const props = defineProps({
   info : Object
 })
@@ -126,9 +138,11 @@ const orderCnt_add = () => {
 //주문내역에관한 정보담기
 const orderInfo = reactive({
     name : orderDrink.value.menuNm,
-    price : orderDrink.value.price,
+    orderPrice : orderDrink.value.price,
+    menuNo : orderDrink.value.menuNo,
     size : '',
-    cnt:1
+    isIceAt : isIceAt,
+    cnt : 1
 })
 
 //장바구니에 담기
@@ -147,10 +161,6 @@ const orderValidation = () =>{
       alert("사이즈를 선택해주세요");
       return false;
     }
-    if (orderInfo.takeoutAt==''){
-      alert("포장유무를 선택해주세요");
-      return false;
-    }
   return true;
 }
 
@@ -163,11 +173,11 @@ const orderSize = [
 const originPrice = Number(JSON.stringify(JSON.parse(orderDrink.value.price)));
 const changePrice = () => {
   if (orderInfo.size=='S'){
-    orderInfo.price = originPrice - 500;
+    orderInfo.orderPrice = originPrice - 500;
   } else if( orderInfo.size == 'M'){
-    orderInfo.price = originPrice;
+    orderInfo.orderPrice = originPrice;
   } else if (orderInfo.size=='L'){
-    orderInfo.price = originPrice + 500;
+    orderInfo.orderPrice = originPrice + 500;
   };
 
 
