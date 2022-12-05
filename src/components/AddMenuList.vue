@@ -63,7 +63,7 @@ const val_check = () => {
     (document.getElementById("menuName") as HTMLInputElement).focus();
     isVal = false;
   } else
-  if(data.price < 0 || data.price == null) {
+  if(data.price <= 0 || data.price == null) {
     alert("가격이 0원 이하이거나 빈칸은 될 수 없습니다.");
     (document.getElementById("menuPrice") as HTMLInputElement).focus();
     isVal = false;

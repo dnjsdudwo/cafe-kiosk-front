@@ -38,8 +38,7 @@ export const useCrudStore = defineStore("crudStore", () => {
         const isVal = confirm("메뉴를 삭제 하시겠습니까?");
         if(isVal){
             const delMenu = axios.post("/api/delMenuList", data);
-            alert("삭제 되었습니다");
-            window.location.reload();
+            alert("삭제 되었습니다")
         }
     }
 

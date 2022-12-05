@@ -53,11 +53,11 @@ export const useCartStore = defineStore("cartStore", () => {
     }
 
     const resultMessage = () => {
+        let msg = '주문이 완료 되었습니다.';
         if(cartList.length == 0) {
-            alert("음료를 선택해 주세요");
-        }else{
-            alert("주문이 완료 되었습니다.");
+            msg = '음료를 선택해 주세요';
         }
+        alert(msg);
     }
 
     const init_order = () => {

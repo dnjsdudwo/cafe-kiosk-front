@@ -22,7 +22,7 @@
                   </div>
                   <div class="text-h6 mb-1">
                     {{ menu.name }}
-                    <span class="x-span" @click="click_del_menu(menu.menu_no)">x</span>
+                    <span class="x-span" @click="click_del_menu(menu.menu_no, index)">x</span>
                     <span class="o-span" @click="click_upd_menu(menu)">o</span>
                   </div>
                   <div class="text-md-h6">{{ menu.price }}원</div>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import {useModalStore} from "@/stores/modalStore";
 import {useCrudStore} from "@/stores/crudStore";
 import Modal from "@/components/Modal.vue";
@@ -70,11 +70,13 @@ type useType = {
 
 const menuList: useType[] = reactive([]);
 
-const apiMenuList = axios.post('/api/getMenuList?type=coffee').then((res) => {
-  res.data.forEach((value: useType) => {
-    menuList.push(value)
-  })
-});
+const getMenuList = onMounted(() => {
+  const apiMenuList = axios.post('/api/getMenuList?type=coffee').then((res) => {
+    res.data.forEach((value: useType) => {
+      menuList.push(value)
+    })
+  });
+})
 
 const modalStore = useModalStore();
 let {show_modal, upd_list} = modalStore;
@@ -88,8 +90,9 @@ const click_selectMenu = (menu: useType) => {
   show_modal.modal= true;
 }
 
-const click_del_menu = (no: number) => {
+const click_del_menu = (no: number, index: number) => {
   delMenu(no);
+  menuList.splice(index, 1);
 }
 
 const click_upd_menu = (menu: useType) => {
