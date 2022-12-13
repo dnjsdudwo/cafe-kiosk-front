@@ -75,6 +75,11 @@ const val_check = () => {
   }
 
   if(isVal){
+    if(data.type == 'coffee') {
+      data.type = 'c'
+    }else {
+      data.type = 'd'
+    }
 
     if(add_list.modal) {
       const dataRes = axios.post('/api/addMenuList', data);

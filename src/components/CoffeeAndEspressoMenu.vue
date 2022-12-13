@@ -13,7 +13,7 @@
             <v-card
                 class="mx-auto"
                 max-width="400"
-                height="210"
+                height="200"
                 variant="outlined"
             >
               <v-card-item>
@@ -71,7 +71,7 @@ type useType = {
 const menuList: useType[] = reactive([]);
 
 const getMenuList = onMounted(() => {
-  const apiMenuList = axios.post('/api/getMenuList?type=coffee').then((res) => {
+  const apiMenuList = axios.post('/api/getMenuList?type=c').then((res) => {
     res.data.forEach((value: useType) => {
       menuList.push(value)
     })

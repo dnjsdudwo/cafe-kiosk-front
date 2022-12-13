@@ -75,9 +75,9 @@ export const useCartStore = defineStore("cartStore", () => {
 
     const splitList = () => {
         cartList.forEach((value) => {
-            if(value.type == 'coffee') {
+            if(value.type == 'c') {
                 coffeeList.push(value);
-            }else if(value.type == 'drink') {
+            }else if(value.type == 'd') {
                 drinkList.push(value);
             }
         })
@@ -91,7 +91,7 @@ export const useCartStore = defineStore("cartStore", () => {
             const response = await axios.post('/api/coffee', coffeeList)
         }
         if(drinkList.length > 0){
-            const response = await axios.post('/api/drink', drinkList)
+            const response = await axios.post('/api/coffee', drinkList)
         }
     }
 

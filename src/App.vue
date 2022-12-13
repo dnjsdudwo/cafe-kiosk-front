@@ -15,7 +15,7 @@
 					Drink
 				</v-tab>
 			</v-tabs>
-			<v-card height="857px">
+			<v-card height="1000px">
 				<router-view></router-view>
         <OrderList v-if="$route.name !== 'Home'"></OrderList>
 			</v-card>
