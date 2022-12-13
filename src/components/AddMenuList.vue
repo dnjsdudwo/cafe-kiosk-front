@@ -48,7 +48,11 @@ const beforeList = () => {
     data.name = props.selectMenu!.name;
     data.price = props.selectMenu!.price;
     data.menuInfo = props.selectMenu!.menuInfo;
-    data.type = props.selectMenu!.type;
+    if(props.selectMenu!.type == 'c') {
+      data.type = 'coffee';
+   } else {
+      data.type = 'drink';
+    }
 }
 
 
