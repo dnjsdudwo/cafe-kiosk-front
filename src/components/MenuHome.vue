@@ -41,8 +41,10 @@
         </v-col>
       </v-row>
       <add-menu-list></add-menu-list>
-      <div style="position: absolute; bottom: 20px;">
+      <OrderModal></OrderModal>
+      <div style="position: absolute; bottom: 150px;">
         <v-btn variant="outlined" style="width: 150px; height: 50px;" @click="add_list.modal = true">상품추가</v-btn>
+        <v-btn variant="outlined" style="width: 150px; height: 50px; margin-left: 20px;" @click="order_list.modal = true">주문내역</v-btn>
       </div>
     </v-container>
   </div>
@@ -53,9 +55,10 @@
 import LoadingProgress from "./LoadingProgress.vue"
 import CustomAlert from '@/components/CustomAlert.vue'
 import AddMenuList from "@/components/AddMenuList.vue";
+import OrderModal from "@/components/OrderModal.vue";
 import {useModalStore} from "@/stores/modalStore";
 
 const modalStore = useModalStore();
-let {add_list} = modalStore;
+let {add_list, order_list} = modalStore;
 
 </script>
