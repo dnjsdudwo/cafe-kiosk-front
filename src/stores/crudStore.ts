@@ -10,7 +10,7 @@ type useType = {
     count: number,
     isIce: string,
     size : string,
-    type: string,
+    typeCode: string,
 }
 
 export const useCrudStore = defineStore("crudStore", () => {
@@ -21,7 +21,7 @@ export const useCrudStore = defineStore("crudStore", () => {
         price: 0,
         menuInfo: '',
         count: 0,
-        type: ''
+        typeCode: ''
     })
 
     const reSelectMenu = (menu: useType) => {
@@ -30,7 +30,7 @@ export const useCrudStore = defineStore("crudStore", () => {
         selectMenu.value.price = menu.price;
         selectMenu.value.menuInfo = menu.menuInfo;
         selectMenu.value.count = menu.count;
-        selectMenu.value.type = menu.type;
+        selectMenu.value.typeCode = menu.typeCode;
     }
 
     const delMenu = (no: number) => {

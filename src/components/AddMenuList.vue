@@ -14,8 +14,8 @@
       <textarea v-model="data.menuInfo"></textarea>
       <p>메뉴타입</p>
       <div class="type-div">
-        <label><input type="radio" name="typeGroup" value="c" checked>Coffee</label>
-        <label><input type="radio" name="typeGroup" value="d">Drink</label>
+        <label><input type="radio" name="typeGroup" value="coffee" checked>Coffee</label>
+        <label><input type="radio" name="typeGroup" value="drink">Drink</label>
       </div>
       <div class="btn-div">
         <v-btn v-if="upd_list.modal" @click="val_check()">수정하기</v-btn>
@@ -43,7 +43,7 @@ const data = reactive({
   name: '',
   price: 0,
   menuInfo: '',
-  type: ''
+  typeCode: ''
 });
 
 const beforeList = () => {
@@ -52,9 +52,6 @@ const beforeList = () => {
     data.price = props.selectMenu!.price;
     data.menuInfo = props.selectMenu!.menuInfo;
 }
-
-
-
 
 
 const val_check = () => {
@@ -72,7 +69,7 @@ const val_check = () => {
   }
 
   if(isVal){
-    data.type = (document.querySelector('input[name="typeGroup"]:checked') as HTMLInputElement)?.value;
+    data.typeCode = (document.querySelector('input[name="typeGroup"]:checked') as HTMLInputElement)?.value;
 
     if(add_list.modal) {
       const dataRes = axios.post('/api/addMenuList', data);

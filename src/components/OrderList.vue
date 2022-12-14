@@ -33,7 +33,7 @@ type useType = {
   count: number,
   isIce: string,
   size : string,
-  type: string
+  typeCode: string
 }
 
 const cartStore = useCartStore();

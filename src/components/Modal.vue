@@ -7,7 +7,7 @@
         <div class="contents">
           <div class="hotIce-div">
             <h3>==== 음료선택 ====</h3>
-            <label v-if="props.selectMenu.type === 'c'"><input type="radio" name="isIce" value="false">HOT</label>
+            <label v-if="props.selectMenu.typeCode === 'coffee'"><input type="radio" name="isIce" value="false">HOT</label>
             <label><input type="radio" name="isIce" value="true" checked>ICE</label>
           </div>
           <div class="size-div">
@@ -38,7 +38,7 @@ type useType = {
   count: number,
   isIce: string,
   size : string,
-  type: string
+  typeCode: string
 }
 
 const modalSt = useModalStore();

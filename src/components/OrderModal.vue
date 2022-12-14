@@ -11,7 +11,7 @@
             <tr v-for="line in orderList">
               <td>{{line.resDate}}</td>
               <td>{{'( ' + line.isIce + ' ) ' + line.name}}</td>
-              <td>{{line.price * line.count}}</td>
+              <td>{{line.price}}</td>
               <td>{{line.count}}</td>
               <td>{{line.size}}</td>
             </tr>

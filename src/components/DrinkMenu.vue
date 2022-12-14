@@ -63,7 +63,7 @@ type useType = {
   price: number,
   menuInfo: string,
   count: number,
-  type: string,
+  typeCode: string,
   size: string,
   isIce: string
 }
@@ -71,7 +71,7 @@ type useType = {
 const menuList: useType[] = reactive([]);
 
 const getMenuList = onMounted(() => {
-  const apiMenuList = axios.post('/api/getMenuList?type=d').then((res) => {
+  const apiMenuList = axios.post('/api/getMenuList?typeCode=drink').then((res) => {
     res.data.forEach((value: useType) => {
       menuList.push(value)
     })

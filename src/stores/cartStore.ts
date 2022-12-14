@@ -9,7 +9,7 @@ type useType = {
     count: number,
     isIce: string,
     size : string,
-    type: string,
+    typeCode: string,
 }
 
 export const useCartStore = defineStore("cartStore", () => {
@@ -75,9 +75,9 @@ export const useCartStore = defineStore("cartStore", () => {
 
     const splitList = () => {
         cartList.forEach((value) => {
-            if(value.type == 'c') {
+            if(value.typeCode == 'coffee') {
                 coffeeList.push(value);
-            }else if(value.type == 'd') {
+            }else if(value.typeCode == 'drink') {
                 drinkList.push(value);
             }
         })
