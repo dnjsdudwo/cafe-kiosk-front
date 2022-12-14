@@ -13,7 +13,10 @@
       <p>음료설명</p>
       <textarea v-model="data.menuInfo"></textarea>
       <p>메뉴타입</p>
-      <input type="text" v-model="data.type" placeholder="coffee & drink" id="menuType">
+      <div class="type-div">
+        <label><input type="radio" name="typeGroup" value="c" checked>Coffee</label>
+        <label><input type="radio" name="typeGroup" value="d">Drink</label>
+      </div>
       <div class="btn-div">
         <v-btn v-if="upd_list.modal" @click="val_check()">수정하기</v-btn>
         <v-btn v-else @click="val_check()">추가하기</v-btn>
@@ -48,11 +51,6 @@ const beforeList = () => {
     data.name = props.selectMenu!.name;
     data.price = props.selectMenu!.price;
     data.menuInfo = props.selectMenu!.menuInfo;
-    if(props.selectMenu!.type == 'c') {
-      data.type = 'coffee';
-   } else {
-      data.type = 'drink';
-    }
 }
 
 
@@ -71,19 +69,10 @@ const val_check = () => {
     alert("가격이 0원 이하이거나 빈칸은 될 수 없습니다.");
     (document.getElementById("menuPrice") as HTMLInputElement).focus();
     isVal = false;
-  } else
-  if(data.type == "" || (data.type != 'coffee' && data.type != 'drink')) {
-    alert("coffee 또는 drink 만 입력가능합니다.");
-    (document.getElementById("menuType") as HTMLInputElement).focus();
-    isVal = false;
   }
 
   if(isVal){
-    if(data.type == 'coffee') {
-      data.type = 'c'
-    }else {
-      data.type = 'd'
-    }
+    data.type = (document.querySelector('input[name="typeGroup"]:checked') as HTMLInputElement)?.value;
 
     if(add_list.modal) {
       const dataRes = axios.post('/api/addMenuList', data);
@@ -92,7 +81,6 @@ const val_check = () => {
       data.name = '';
       data.price = 0;
       data.menuInfo = '';
-      data.type = '';
       add_list.modal = false;
 
     }else if(upd_list.modal) {
@@ -102,9 +90,7 @@ const val_check = () => {
       data.name = '';
       data.price = 0;
       data.menuInfo = '';
-      data.type = '';
       upd_list.modal = false;
-      window.location.reload();
     }
   }
 
@@ -114,7 +100,6 @@ const close = () => {
   data.name = '';
   data.price = 0;
   data.menuInfo = '';
-  data.type = '';
   add_list.modal = false;
   upd_list.modal = false;
 }
@@ -128,6 +113,18 @@ const close = () => {
 .btn{margin-left: 20px;}
 h2{margin-bottom: 30px; text-align: center;}
 p{font-weight: bold; font-size: 18px;}
+
+.type-div {
+  margin-top: 10px;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+label {
+  margin-right: 100px;
+  font-weight: bold;
+}
 
 input[type='text'] , textarea{
   background: dimgray;
